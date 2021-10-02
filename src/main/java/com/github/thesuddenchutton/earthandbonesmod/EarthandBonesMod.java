@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.github.thesuddenchutton.earthandbonesmod;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -15,16 +15,22 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.github.thesuddenchutton.earthandbonesmod.handlers.EventHandler;
+import com.github.thesuddenchutton.earthandbonesmod.setup.Registration;
+
 import java.util.stream.Collectors;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod("examplemod")
-public class ExampleMod
+@Mod(EarthandBonesMod.MODID)
+public class EarthandBonesMod
 {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public ExampleMod() {
+    public static final String MODID = "earthandbonesmod";
+    public EarthandBonesMod() {
+    	Registration.init();
+    	
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         // Register the enqueueIMC method for modloading
@@ -34,6 +40,7 @@ public class ExampleMod
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(EventHandler.class);
     }
 
     private void setup(final FMLCommonSetupEvent event)
@@ -46,15 +53,15 @@ public class ExampleMod
     private void enqueueIMC(final InterModEnqueueEvent event)
     {
         // some example code to dispatch IMC to another mod
-        InterModComms.sendTo("examplemod", "helloworld", () -> { LOGGER.info("Hello world from the MDK"); return "Hello world";});
+        //InterModComms.sendTo("examplemod", "helloworld", () -> { LOGGER.info("Hello world from the MDK"); return "Hello world";});
     }
 
     private void processIMC(final InterModProcessEvent event)
     {
         // some example code to receive and process InterModComms from other mods
-        LOGGER.info("Got IMC {}", event.getIMCStream().
-                map(m->m.messageSupplier().get()).
-                collect(Collectors.toList()));
+        /*LOGGER.info("Got IMC {}", event.getIMCStream().
+               map(m->m.messageSupplier().get()).
+               collect(Collectors.toList()));*/
     }
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
@@ -69,7 +76,8 @@ public class ExampleMod
     public static class RegistryEvents {
         @SubscribeEvent
         public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
-            // register a new block here
+            
+        	
             LOGGER.info("HELLO from Register Block");
         }
     }
