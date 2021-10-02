@@ -5,6 +5,12 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.OreFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -17,16 +23,21 @@ import com.github.thesuddenchutton.earthandbonesmod.blocks.SpikeTrap;
 import com.github.thesuddenchutton.earthandbonesmod.blocks.Spikes;
 import com.github.thesuddenchutton.earthandbonesmod.items.HumanFlesh;
 import com.github.thesuddenchutton.earthandbonesmod.items.Spine;
+import com.github.thesuddenchutton.earthandbonesmod.world.gen.features.FloorTrap;
 
 public class Registration {
 	private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 	private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
+	private static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, MODID);
 	
 	public static void init() {
 		ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
 		BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
 		
 	}
+	public static final RegistryObject<FloorTrap> FloorTrap = FEATURES.register("floortrap", () -> new FloorTrap(OreConfiguration.CODEC));
+
+	
 	public static final RegistryObject<HumanFlesh> HUMANFLESH = ITEMS.register("humanflesh", () -> new HumanFlesh(new Item.Properties().food(new FoodProperties.Builder().meat().alwaysEat().nutrition(4).saturationMod(1).build()).tab(CreativeModeTab.TAB_FOOD)));
 	public static final RegistryObject<Spine> SPINE = ITEMS.register("spine", () -> new Spine());
 
