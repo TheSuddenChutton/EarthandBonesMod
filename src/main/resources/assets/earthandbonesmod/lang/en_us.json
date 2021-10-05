@@ -1,7 +1,19 @@
 {
 	"item.earthandbonesmod.humanflesh": "Human Flesh",
 	"item.earthandbonesmod.spine": "Spine",
+	"item.earthandbonesmod.spikes": "Spikes",
+	"item.earthandbonesmod.armorin": "Armorin",
+	"item.earthandbonesmod.healthium": "Healthium",
+	"item.earthandbonesmod.fiercion": "Fiercion",
 	"block.earthandbonesmod.rubble": "Rubble",
-	"message.humanflesh": "Delicious Morsel.",
+	"block.earthandbonesmod.spidernest": "Spider Nest",
+	"block.earthandbonesmod.armorore": "Armor Ore",
+	"block.earthandbonesmod.healthyore": "Healthy Ore",
+	"block.earthandbonesmod.fierceore": "Fierce Ore",
+	"block.earthandbonesmod.spiketrap": "Spike Trap",
+	"message.humanflesh": "Delicious morsel.",
+	"message.armorin": "Tastes like metal.",
+	"message.healthium": "Healthy treat.",
+	"message.fiercion": "Holding this makes you feel powerful.",
 	"message.spine": "Rips the bones of your enemies right out of them."
 }

@@ -4,17 +4,19 @@ import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.OreFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 
-public class FloorTrap extends OreFeature{
+public class CeilTrap extends OreFeature{
 
-	public FloorTrap(Codec<OreConfiguration> p_66531_) {
-	
+	Block b;
+	public CeilTrap(Codec<OreConfiguration> p_66531_, Block block) {
 		super(p_66531_);
+		b = block;
 	}
 	@Override
 	public boolean place(FeaturePlaceContext<OreConfiguration> p_159865_) {
@@ -27,7 +29,7 @@ public class FloorTrap extends OreFeature{
 		    BlockState blockstate = levelaccessor.getBlockState(blockpos);
 		    BlockState blockstate1 = levelaccessor.getBlockState(blockpos1);
 
-		    if (blockstate1.isAir() && blockstate.is(Blocks.STONE)) {
+		    if (b == blockstate1.getBlock() && blockstate.isAir()) {
 				levelaccessor.setBlock(blockpos, oreconfiguration.targetStates.get(0).state, 0);
 		    	return true;
 		    }

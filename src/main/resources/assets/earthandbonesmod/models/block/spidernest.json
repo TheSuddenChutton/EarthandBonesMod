@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "earthandbonesmod:block/spidernest",
+    "north": "earthandbonesmod:block/spidernest",
+    "south": "earthandbonesmod:block/spidernest",
+    "east": "earthandbonesmod:block/spidernest",
+    "west": "earthandbonesmod:block/spidernest",
+    "up": "earthandbonesmod:block/spidernesttopbottom",
+  	"down": "earthandbonesmod:block/spidernesttopbottom"
+  }
+}

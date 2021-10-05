@@ -10,15 +10,9 @@ import com.github.thesuddenchutton.earthandbonesmod.setup.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.AirBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -32,16 +26,14 @@ public class Rubble extends FallingBlock {
 	public static ServerLevel serverlevel;
 	
 	public Rubble () {
-		super(Properties.of(Material.SAND).sound(SoundType.GRAVEL).strength(2.0f));
+		super(Properties.of(Material.SAND).sound(SoundType.GRAVEL).destroyTime(1).strength(1.0f, 0.5f).requiresCorrectToolForDrops());
 	}
-	
 	@Override
 	public List<ItemStack> getDrops(BlockState p_60537_, Builder p_60538_) {
 		ArrayList<ItemStack> l = new ArrayList<ItemStack>();
 		l.add(new ItemStack(Registration.RUBBLE_ITEM.get()));
 		return l;
 	}
-	
 	@Override
 	public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing,
 			IPlantable plantable) {
@@ -61,8 +53,8 @@ public class Rubble extends FallingBlock {
 	@Override
 	public void tick(BlockState st, ServerLevel level, BlockPos pos, Random rand) {
 		if(serverlevel == null)serverlevel = level;
-		EventHandler.level = serverlevel;
-		if(!level.isWaterAt(pos.below()) && !level.isEmptyBlock(pos.below())) {
+		if(EventHandler.level == null)EventHandler.level = serverlevel;
+		if(!level.isWaterAt(pos.below()) && !level.isEmptyBlock(pos.below()) && rand.nextBoolean()) {
 			if(level.isEmptyBlock(pos.below().east()) && rand.nextInt(5) == 0) {
 				level.setBlock(pos.below().east(), st, UPDATE_ALL);
 				if(!level.isEmptyBlock(pos.below().below().east()))level.setBlock(pos.below().below().east(), st, UPDATE_ALL);

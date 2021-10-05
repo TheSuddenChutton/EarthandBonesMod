@@ -1,5 +1,6 @@
 {
     "variants": {
-        "": { "model": "earthandbonesmod:block/spiketrap" }
+        "triggered=false": { "model": "earthandbonesmod:block/spiketrap" },
+        "triggered=true": { "model": "earthandbonesmod:block/spiketrapactivated" }
     }
 }
