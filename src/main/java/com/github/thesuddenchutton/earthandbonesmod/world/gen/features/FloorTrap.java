@@ -12,13 +12,14 @@ import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguratio
 
 public class FloorTrap extends OreFeature{
 
-	public FloorTrap(Codec<OreConfiguration> p_66531_) {
-	
+	boolean undergroundOnly;
+	public FloorTrap(Codec<OreConfiguration> p_66531_, boolean undergroundOnly) {
 		super(p_66531_);
+		this.undergroundOnly = undergroundOnly;
 	}
 	@Override
 	public boolean place(FeaturePlaceContext<OreConfiguration> p_159865_) {
-	      
+	    
 		LevelAccessor levelaccessor = p_159865_.level();
 	    OreConfiguration oreconfiguration = p_159865_.config();
 	    for(int j = 1; j <= 150; ++j) {
@@ -28,8 +29,12 @@ public class FloorTrap extends OreFeature{
 		    BlockState blockstate1 = levelaccessor.getBlockState(blockpos1);
 
 		    if (blockstate1.isAir() && blockstate.is(Blocks.STONE)) {
-				levelaccessor.setBlock(blockpos, oreconfiguration.targetStates.get(0).state, 0);
-		    	return true;
+		    	if(!undergroundOnly || !levelaccessor.canSeeSky(blockpos))
+				{
+		    		levelaccessor.setBlock(blockpos, oreconfiguration.targetStates.get(0).state, 0);
+		    		System.out.println("Placed Floor Trap");
+		    		return true;
+				}
 		    }
 	    }
 	    return true;

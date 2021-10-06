@@ -13,6 +13,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -49,55 +50,20 @@ public class Rubble extends FallingBlock {
 	public boolean isRandomlyTicking(BlockState p_49921_) {
 		return true;
 	}
-	  
 	@Override
-	public void tick(BlockState st, ServerLevel level, BlockPos pos, Random rand) {
-		if(serverlevel == null)serverlevel = level;
-		if(EventHandler.level == null)EventHandler.level = serverlevel;
-		if(!level.isWaterAt(pos.below()) && !level.isEmptyBlock(pos.below()) && rand.nextBoolean()) {
-			if(level.isEmptyBlock(pos.below().east()) && rand.nextInt(5) == 0) {
-				level.setBlock(pos.below().east(), st, UPDATE_ALL);
-				if(!level.isEmptyBlock(pos.below().below().east()))level.setBlock(pos.below().below().east(), st, UPDATE_ALL);
-			}
-			if(level.isEmptyBlock(pos.below().west()) && rand.nextInt(5) == 0) {
-				level.setBlock(pos.below().west(), st, UPDATE_ALL);
-				if(!level.isEmptyBlock(pos.below().below().west()))level.setBlock(pos.below().below().west(), st, UPDATE_ALL);
-				level.setBlock(pos, Blocks.AIR.defaultBlockState(), UPDATE_ALL);	
-			}
-			if(level.isEmptyBlock(pos.below().north()) && rand.nextInt(5) == 0) {
-				level.setBlock(pos.below().north(), st, UPDATE_ALL);
-				if(!level.isEmptyBlock(pos.below().below().north()))level.setBlock(pos.below().below().north(), st, UPDATE_ALL);
-				level.setBlock(pos, Blocks.AIR.defaultBlockState(), UPDATE_ALL);
-			}
-			if(level.isEmptyBlock(pos.below().south()) && rand.nextInt(5) == 0) {
-				level.setBlock(pos.below().south(), st, UPDATE_ALL);
-				if(!level.isEmptyBlock(pos.below().below().south()))level.setBlock(pos.below().below().south(), st, UPDATE_ALL);
-				level.setBlock(pos, Blocks.AIR.defaultBlockState(), UPDATE_ALL);	
-			}
-		}else
-		{
-			level.setBlock(pos.below(), st, UPDATE_ALL);
-			level.setBlock(pos, Blocks.AIR.defaultBlockState(), UPDATE_ALL);
-
-			if(level.getBlockState(pos.below()).getBlock() == Blocks.DIRT || level.getBlockState(pos.below()).getBlock() == Blocks.STONE) {
-				level.setBlock(pos.below(), st, UPDATE_ALL);
-			}
-			if(level.getBlockState(pos.below(2)).getBlock() == Blocks.DIRT || level.getBlockState(pos.below(2)).getBlock() == Blocks.STONE) {
-				level.setBlock(pos.below(2), st, UPDATE_ALL);
-			}
-			if(level.getBlockState(pos.below().west()).getBlock() == Blocks.DIRT || level.getBlockState(pos.below().west()).getBlock() == Blocks.STONE) {
-				level.setBlock(pos.below().west(), st, UPDATE_ALL);
-			}
-			if(level.getBlockState(pos.below().east()).getBlock() == Blocks.DIRT || level.getBlockState(pos.below().east()).getBlock() == Blocks.STONE) {
-				level.setBlock(pos.below().east(), st, UPDATE_ALL);
-			}
-			if(level.getBlockState(pos.below().north()).getBlock() == Blocks.DIRT || level.getBlockState(pos.below().north()).getBlock() == Blocks.STONE) {
-				level.setBlock(pos.below().north(), st, UPDATE_ALL);
-			}
-			if(level.getBlockState(pos.below().south()).getBlock() == Blocks.DIRT || level.getBlockState(pos.below().south()).getBlock() == Blocks.STONE) {
-				level.setBlock(pos.below().south(), st, UPDATE_ALL);
-			}
+	public void onPlace(BlockState p_53233_, Level p_53234_, BlockPos p_53235_, BlockState p_53236_, boolean p_53237_) {
+		if(!EventHandler.ActiveRubble.contains(p_53235_))EventHandler.ActiveRubble.add(p_53235_);
+		super.onPlace(p_53233_, p_53234_, p_53235_, p_53236_, p_53237_);
+	}
+	@Override
+	public void tick(BlockState p_53216_, ServerLevel p_53217_, BlockPos p_53218_, Random p_53219_) {
+		for (int i = 0; i < EventHandler.players.size(); i++) {
+			if(!EventHandler.ActiveRubble.contains(p_53218_) && EventHandler.isWithinDistance(p_53218_, EventHandler.players.get(i).blockPosition(), 50))
+				{
+					System.out.println("Added random rubble");
+					EventHandler.ActiveRubble.add(p_53218_);
+				}
+			
 		}
 	}
-	
 }

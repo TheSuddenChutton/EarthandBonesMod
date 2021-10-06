@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguratio
 
 public class CeilTrap extends OreFeature{
 
+	public static int n = 0;
 	Block b;
 	public CeilTrap(Codec<OreConfiguration> p_66531_, Block block) {
 		super(p_66531_);
@@ -31,7 +32,9 @@ public class CeilTrap extends OreFeature{
 
 		    if (b == blockstate1.getBlock() && blockstate.isAir()) {
 				levelaccessor.setBlock(blockpos, oreconfiguration.targetStates.get(0).state, 0);
-		    	return true;
+		    	n++;
+		    	System.out.println(n);
+				return true;
 		    }
 	    }
 	    return true;

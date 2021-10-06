@@ -28,7 +28,7 @@ public class SpiderNest extends Block {
 	public static Random rand = new Random();
 	
 	public SpiderNest () {
-		super(Properties.of(Material.METAL).sound(SoundType.METAL).strength(7.0f).requiresCorrectToolForDrops());
+		super(Properties.of(Material.METAL).sound(SoundType.GRAVEL).strength(7.0f).requiresCorrectToolForDrops());
 	    this.registerDefaultState(this.defaultBlockState().setValue(SPIDERS, 3));
 	}
 	

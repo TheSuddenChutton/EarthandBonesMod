@@ -44,7 +44,7 @@ public class Registration {
 		FEATURES.register(FMLJavaModLoadingContext.get().getModEventBus());
 		
 	}
-	public static final RegistryObject<FloorTrap> FloorTrap = FEATURES.register("floortrap", () -> new FloorTrap(OreConfiguration.CODEC));
+	public static final RegistryObject<FloorTrap> FloorTrapUnderground = FEATURES.register("floortrap", () -> new FloorTrap(OreConfiguration.CODEC,true));
 	public static final RegistryObject<CeilTrap> SpiderNestDO = FEATURES.register("spidernestdo", () -> new CeilTrap(OreConfiguration.CODEC, Blocks.DARK_OAK_LEAVES));
 	public static final RegistryObject<CeilTrap> SpiderNestJU = FEATURES.register("spidernestju", () -> new CeilTrap(OreConfiguration.CODEC, Blocks.JUNGLE_LEAVES));
 	public static final RegistryObject<CeilTrap> SpiderNestOAK = FEATURES.register("spidernestoak", () -> new CeilTrap(OreConfiguration.CODEC, Blocks.OAK_LEAVES));
