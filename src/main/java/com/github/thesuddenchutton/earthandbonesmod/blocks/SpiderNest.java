@@ -9,11 +9,14 @@ import com.github.thesuddenchutton.earthandbonesmod.setup.Registration;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -28,7 +31,7 @@ public class SpiderNest extends Block {
 	public static Random rand = new Random();
 	
 	public SpiderNest () {
-		super(Properties.of(Material.METAL).sound(SoundType.GRAVEL).strength(7.0f).requiresCorrectToolForDrops());
+		super(Properties.of(Material.CLAY).sound(SoundType.GRAVEL).strength(3.0f).requiresCorrectToolForDrops());
 	    this.registerDefaultState(this.defaultBlockState().setValue(SPIDERS, 3));
 	}
 	
@@ -43,6 +46,10 @@ public class SpiderNest extends Block {
 			p_60463_.setBlock(p_60464_, p_60463_.getBlockState(p_60464_).setValue(SpiderNest.SPIDERS, p_60463_.getBlockState(p_60464_).getValue(SpiderNest.SPIDERS)+1), 0);
 		}
 		
+	}
+	@Override
+	public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
+		return (player.hasCorrectToolForDrops(Blocks.COBWEB.defaultBlockState()) && player.getItemInHand(InteractionHand.MAIN_HAND).getItem() != Items.WOODEN_SWORD);
 	}
 	@Override
 	public boolean isRandomlyTicking(BlockState p_49921_) {

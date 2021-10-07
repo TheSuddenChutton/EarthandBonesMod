@@ -84,7 +84,7 @@ public class EventHandler {
 					if(level != null) {
 						for (int i = 0; i < players.size(); i++) {
 							
-							for (int i2 = 0; i2 < spiderNests.size() && i2 < 5; i2++) {
+							for (int i2 = 0; i2 < spiderNests.size() && i2 < 20; i2++) {
 								Player player = players.get(i);
 								nestnum++;
 								if(nestnum >= spiderNests.size())nestnum = 0;
@@ -93,13 +93,111 @@ public class EventHandler {
 									spiderNests.remove(nestnum);
 									nestnum--;
 								}
-								else if(rand.nextInt(10) == 0){
+								else if(rand.nextInt(40) == 0){
 									if(isWithinDistance(nest, player.blockPosition(), 10) && level.getBlockState(nest).getValue(SpiderNest.SPIDERS) > 0) {
 										System.out.println("SPIDERS");
-										Entity spider = new Spider(EntityType.SPIDER, level);
+										Spider spider = new Spider(EntityType.SPIDER, level);
 										level.addFreshEntity(spider);
-										spider.setPos(nest.below().getX(),nest.below().getY(),nest.below().getZ());
+										BlockPos spawnspot = nest;
+										boolean foundspot = false;
+										while(!foundspot) {
+											if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+												spawnspot = spawnspot.below();
+											}
+											if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+												spawnspot = spawnspot.east(rand.nextInt(3) - 1);
+											}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+												spawnspot = spawnspot.south(rand.nextInt(3) - 1);
+											}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+												spawnspot = spawnspot.north(rand.nextInt(3) - 1);
+											}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+												spawnspot = spawnspot.west(rand.nextInt(3) - 1);
+											}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+												spawnspot = spawnspot.above(rand.nextInt(3));
+											}
+											else {
+												foundspot = true;
+											}
+										}
+										spider.setPos(spawnspot.getX(), spawnspot.getY(),spawnspot.getZ());
+										spider.setTarget(player);
 										level.setBlock(nest, level.getBlockState(nest).setValue(SpiderNest.SPIDERS, level.getBlockState(nest).getValue(SpiderNest.SPIDERS)-1), 3);
+									}
+									else if(!isWithinDistance(nest, player.blockPosition(), 15) && isWithinDistance(nest, player.blockPosition(), 100) && rand.nextInt(20) == 0 && level.getBlockState(nest).getValue(SpiderNest.SPIDERS) > 0){
+										BlockPos spawnspot = nest;
+										boolean foundspot = false;
+										while(!foundspot) {
+											if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+												spawnspot = spawnspot.below();
+											}
+											if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+												spawnspot = spawnspot.east(rand.nextInt(3) - 1);
+											}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+												spawnspot = spawnspot.south(rand.nextInt(3) - 1);
+											}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+												spawnspot = spawnspot.north(rand.nextInt(3) - 1);
+											}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+												spawnspot = spawnspot.west(rand.nextInt(3) - 1);
+											}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+												spawnspot = spawnspot.above(rand.nextInt(3));
+											}else {
+												foundspot = true;
+											}
+										}
+										level.setBlock(nest, level.getBlockState(nest).setValue(SpiderNest.SPIDERS, level.getBlockState(nest).getValue(SpiderNest.SPIDERS)-1), 3);
+										level.setBlock(spawnspot, level.getBlockState(nest).setValue(SpiderNest.SPIDERS, 1), 3);
+										System.out.println("SPIDER NEST GREW");
+									}
+									else if(!isWithinDistance(nest, player.blockPosition(), 15) && isWithinDistance(nest, player.blockPosition(), 100) && rand.nextInt(10) == 0){
+										BlockPos spawnspot = nest;
+										boolean foundspot = false;
+										while(!foundspot) {
+											if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+												spawnspot = spawnspot.below();
+											}
+											if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+												spawnspot = spawnspot.east(rand.nextInt(3) - 1);
+											}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+												spawnspot = spawnspot.south(rand.nextInt(3) - 1);
+											}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+												spawnspot = spawnspot.north(rand.nextInt(3) - 1);
+											}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+												spawnspot = spawnspot.west(rand.nextInt(3) - 1);
+											}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+												spawnspot = spawnspot.above(rand.nextInt(3));
+											}else {
+												foundspot = true;
+											}
+										}
+										level.setBlock(spawnspot, Blocks.COBWEB.defaultBlockState(), 3);
+									}
+									else if(!isWithinDistance(nest, player.blockPosition(), 15) && isWithinDistance(nest, player.blockPosition(), 100) && rand.nextInt(10) == 0){
+										BlockPos spawnspot = nest;
+										boolean foundspot = false;
+										while(!foundspot) {
+											if(!level.getBlockState(spawnspot).is(Blocks.OAK_LEAVES) && !level.getBlockState(spawnspot).is(Blocks.DARK_OAK_LEAVES) 
+													&& !level.getBlockState(spawnspot).is(Blocks.JUNGLE_LEAVES) && !level.getBlockState(spawnspot).is(Blocks.BIRCH_LEAVES)) {
+												spawnspot = spawnspot.below();
+											}if(!level.getBlockState(spawnspot).is(Blocks.OAK_LEAVES) && !level.getBlockState(spawnspot).is(Blocks.DARK_OAK_LEAVES) 
+													&& !level.getBlockState(spawnspot).is(Blocks.JUNGLE_LEAVES) && !level.getBlockState(spawnspot).is(Blocks.BIRCH_LEAVES)) {
+												spawnspot = spawnspot.east(rand.nextInt(3) - 1);
+											}if(!level.getBlockState(spawnspot).is(Blocks.OAK_LEAVES) && !level.getBlockState(spawnspot).is(Blocks.DARK_OAK_LEAVES) 
+														&& !level.getBlockState(spawnspot).is(Blocks.JUNGLE_LEAVES) && !level.getBlockState(spawnspot).is(Blocks.BIRCH_LEAVES)) {
+												spawnspot = spawnspot.south(rand.nextInt(3) - 1);
+											}if(!level.getBlockState(spawnspot).is(Blocks.OAK_LEAVES) && !level.getBlockState(spawnspot).is(Blocks.DARK_OAK_LEAVES) 
+													&& !level.getBlockState(spawnspot).is(Blocks.JUNGLE_LEAVES) && !level.getBlockState(spawnspot).is(Blocks.BIRCH_LEAVES)) {
+												spawnspot = spawnspot.north(rand.nextInt(3) - 1);
+											}if(!level.getBlockState(spawnspot).is(Blocks.OAK_LEAVES) && !level.getBlockState(spawnspot).is(Blocks.DARK_OAK_LEAVES) 
+													&& !level.getBlockState(spawnspot).is(Blocks.JUNGLE_LEAVES) && !level.getBlockState(spawnspot).is(Blocks.BIRCH_LEAVES)) {
+												spawnspot = spawnspot.west(rand.nextInt(3) - 1);
+											}if(!level.getBlockState(spawnspot).is(Blocks.OAK_LEAVES) && !level.getBlockState(spawnspot).is(Blocks.DARK_OAK_LEAVES) 
+													&& !level.getBlockState(spawnspot).is(Blocks.JUNGLE_LEAVES) && !level.getBlockState(spawnspot).is(Blocks.BIRCH_LEAVES)) {
+												spawnspot = spawnspot.above(rand.nextInt(3));
+											}else {
+												foundspot = true;
+											}
+										}
+										level.setBlock(spawnspot, Registration.DEADLEAVES.get().defaultBlockState(), 3);
 									}
 								}
 							}
@@ -118,11 +216,9 @@ public class EventHandler {
 									}
 									else {
 										if(isWithinDistance(rubble, player.blockPosition(), 25)) {
-											System.out.println("rubble " + rubblenum + " is near the player, updating...");
 											UpdateRubble(rubble, level);
 										}
 										if(!isWithinDistance(rubble, player.blockPosition(), 50)) {
-											System.out.println("rubble " + rubblenum + " is far from the player, removing...");
 											ActiveRubble.remove(rubblenum);
 											rubblenum--;
 										}
@@ -159,7 +255,7 @@ public class EventHandler {
 		
 	}
 
-	@SubscribeEvent(priority= EventPriority.HIGH)
+	@SubscribeEvent(priority=EventPriority.HIGH)
 	public static void onBiomeLoading(BiomeLoadingEvent evt)
 	{
 		BlockGenerator.generate(evt);

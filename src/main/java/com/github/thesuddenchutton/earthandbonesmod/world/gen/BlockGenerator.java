@@ -25,9 +25,9 @@ public class BlockGenerator{
 	public static void generate(final BiomeLoadingEvent e) {
 		generateOre(e.getGeneration(), new DirtOrGrassTest(), Registration.RUBBLE.get().defaultBlockState(), 10, 50, 150, 100);
 		generateOre(e.getGeneration(), new GravelOrStoneTest(), Registration.RUBBLE.get().defaultBlockState(), 5, 10, 100, 50);
-		generateOre(e.getGeneration(), new GravelOrStoneTest(), Registration.ARMORORE.get().defaultBlockState(), 2, 10, 30, 10000);
-		generateOre(e.getGeneration(), new GravelOrStoneTest(), Registration.FIERCEORE.get().defaultBlockState(), 2, 10, 30, 10000);
-		generateOre(e.getGeneration(), new GravelOrStoneTest(), Registration.HEALTHYORE.get().defaultBlockState(), 2, 10, 30, 10000);
+		generateOre(e.getGeneration(), new GravelOrStoneTest(), Registration.ARMORORE.get().defaultBlockState(), 4, 10, 40, 10);
+		generateOre(e.getGeneration(), new GravelOrStoneTest(), Registration.FIERCEORE.get().defaultBlockState(), 4, 10, 40, 10);
+		generateOre(e.getGeneration(), new GravelOrStoneTest(), Registration.HEALTHYORE.get().defaultBlockState(), 4, 10, 40, 10);
 		generateFloorTrapUnderground(e.getGeneration(), new AnythingTest(), Registration.SPIKETRAP.get().defaultBlockState(), 1, 1, 20, 150);
 		generateSpiders(Registration.SpiderNestDO.get(), e.getGeneration(), new AnythingTest(), Registration.SPIDERNEST.get().defaultBlockState(), 1, 1, 20, 50);
 		generateSpiders(Registration.SpiderNestJU.get(), e.getGeneration(), new AnythingTest(), Registration.SPIDERNEST.get().defaultBlockState(), 5, 1, 20, 20);
@@ -39,7 +39,7 @@ public class BlockGenerator{
 				settings.addFeature(Decoration.UNDERGROUND_ORES,
 						Feature.ORE.configured(new OreConfiguration(fillerType, state, veinSize)).range(
 								new RangeDecoratorConfiguration(UniformHeight.of(VerticalAnchor.aboveBottom(minHeight),
-										VerticalAnchor.aboveBottom(maxHeight)))).squared().count(amount));
+										VerticalAnchor.aboveBottom(maxHeight)))).count(amount));
 	}
 	private static void generateFloorTrapUnderground(BiomeGenerationSettingsBuilder settings, RuleTest fillerType, BlockState state,
 	          int veinSize, int minHeight, int maxHeight, int amount) {
@@ -53,6 +53,6 @@ public class BlockGenerator{
 				settings.addFeature(Decoration.UNDERGROUND_ORES,
 						spiders.configured(new OreConfiguration(fillerType, state, veinSize)).range(
 								new RangeDecoratorConfiguration(UniformHeight.of(VerticalAnchor.aboveBottom(minHeight),
-										VerticalAnchor.aboveBottom(maxHeight)))).squared().count(amount));
+										VerticalAnchor.aboveBottom(maxHeight)))).count(amount));
 	}
 }

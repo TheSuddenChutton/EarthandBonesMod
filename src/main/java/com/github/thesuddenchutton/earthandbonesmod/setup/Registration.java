@@ -19,6 +19,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import static com.github.thesuddenchutton.earthandbonesmod.EarthandBonesMod.MODID;
 
 import com.github.thesuddenchutton.earthandbonesmod.blocks.ArmorOre;
+import com.github.thesuddenchutton.earthandbonesmod.blocks.DeadLeaves;
 import com.github.thesuddenchutton.earthandbonesmod.blocks.FierceOre;
 import com.github.thesuddenchutton.earthandbonesmod.blocks.HealthyOre;
 import com.github.thesuddenchutton.earthandbonesmod.blocks.Rubble;
@@ -59,6 +60,7 @@ public class Registration {
 
 	
 	public static final RegistryObject<Rubble> RUBBLE = BLOCKS.register("rubble", Rubble::new);
+	public static final RegistryObject<DeadLeaves> DEADLEAVES = BLOCKS.register("deadleaves", DeadLeaves::new);
 	public static final RegistryObject<Item> RUBBLE_ITEM = ITEMS.register("rubble", () -> new BlockItem(RUBBLE.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
 	public static final RegistryObject<Spikes> SPIKES = BLOCKS.register("spikes", Spikes::new);
 	public static final RegistryObject<Item> SPIKES_ITEM = ITEMS.register("spikes", () -> new BlockItem(SPIKES.get(), new Item.Properties()));
