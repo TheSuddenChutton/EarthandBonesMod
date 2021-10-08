@@ -1,21 +1,18 @@
 {
-  "menumusic": {
+	"music.menu": {
+	"replace":true,
     "sounds": [
       {
         "name": "minecraft:music/menu1",
-        "replace":true,
         "stream": true
       },{
         "name": "minecraft:music/menu2",
-        "replace":true,
         "stream": true
       },{
         "name": "minecraft:music/menu3",
-        "replace":true,
         "stream": true
       },{
         "name": "minecraft:music/menu4",
-        "replace":true,
         "stream": true
       }
     ]
