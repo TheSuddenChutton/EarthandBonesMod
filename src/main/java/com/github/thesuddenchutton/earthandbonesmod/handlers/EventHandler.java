@@ -9,19 +9,10 @@ import java.util.Random;
 
 import com.github.thesuddenchutton.earthandbonesmod.blocks.SpiderNest;
 import com.github.thesuddenchutton.earthandbonesmod.setup.Registration;
-import com.github.thesuddenchutton.earthandbonesmod.sounds.MenuMusic;
 import com.github.thesuddenchutton.earthandbonesmod.world.gen.BlockGenerator;
 
-import net.minecraft.client.resources.sounds.Sound;
-import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.AbstractIllager;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Spider;
@@ -33,13 +24,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SpawnerBlock;
-import net.minecraft.world.level.entity.ChunkEntities;
-import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.client.event.sound.PlaySoundEvent;
-import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.WorldTickEvent;
 
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
@@ -297,14 +283,6 @@ public class EventHandler {
 			if(ticking >= 30)ticking = 0;
 		}
 	}
-	@SubscribeEvent
-	static void PlaySound(PlaySoundEvent e) {
-		System.out.println(e.getName());
-		if(e.getName() == "music.menu") {
-			e.setResultSound(new MenuMusic());
-		}
-	}
-	
 	@SubscribeEvent
 	static void OnBreak(BreakEvent e){
 		if(e.getState() != Registration.RUBBLE.get().defaultBlockState() && rand.nextBoolean())TremorPos.add(e.getPos());

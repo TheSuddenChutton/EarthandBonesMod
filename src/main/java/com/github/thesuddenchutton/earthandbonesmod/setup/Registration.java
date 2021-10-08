@@ -53,7 +53,6 @@ public class Registration {
 		SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
 			
 	}
-	public static final RegistryObject<SoundEvent> MENUMUSIC = SOUNDS.register("menumusic", () -> new SoundEvent(new ResourceLocation(MODID, "sounds/music/menumusic")));
 	
 	
 	public static final RegistryObject<FloorTrap> FloorTrapUnderground = FEATURES.register("floortrap", () -> new FloorTrap(OreConfiguration.CODEC,true));
