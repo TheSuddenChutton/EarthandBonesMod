@@ -1,6 +1,5 @@
 package com.github.thesuddenchutton.earthandbonesmod.world.gen;
 
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -8,7 +7,6 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RangeDecoratorConfiguration;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
-import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
@@ -28,18 +26,18 @@ public class BlockGenerator{
 		generateOre(e.getGeneration(), new GravelOrStoneTest(), Registration.ARMORORE.get().defaultBlockState(), 4, 10, 40, 10);
 		generateOre(e.getGeneration(), new GravelOrStoneTest(), Registration.FIERCEORE.get().defaultBlockState(), 4, 10, 40, 10);
 		generateOre(e.getGeneration(), new GravelOrStoneTest(), Registration.HEALTHYORE.get().defaultBlockState(), 4, 10, 40, 10);
-		generateFloorTrapUnderground(e.getGeneration(), new AnythingTest(), Registration.SPIKETRAP.get().defaultBlockState(), 1, 1, 20, 150);
-		generateSpiders(Registration.SpiderNestDO.get(), e.getGeneration(), new AnythingTest(), Registration.SPIDERNEST.get().defaultBlockState(), 1, 1, 20, 50);
-		generateSpiders(Registration.SpiderNestJU.get(), e.getGeneration(), new AnythingTest(), Registration.SPIDERNEST.get().defaultBlockState(), 5, 1, 20, 20);
-		generateSpiders(Registration.SpiderNestOAK.get(), e.getGeneration(), new AnythingTest(), Registration.SPIDERNEST.get().defaultBlockState(), 1, 1, 20, 10);
-		generateSpiders(Registration.SpiderNestBI.get(), e.getGeneration(), new AnythingTest(), Registration.SPIDERNEST.get().defaultBlockState(), 1, 1, 20, 15);
+		generateFloorTrapUnderground(e.getGeneration(), new AnythingTest(), Registration.SPIKETRAP.get().defaultBlockState(), 1, 1, 20, 75);
+		generateSpiders(Registration.SpiderNestDO.get(), e.getGeneration(), new AnythingTest(), Registration.SPIDERNEST.get().defaultBlockState(), 15, 1, 20, 1);
+		generateSpiders(Registration.SpiderNestJU.get(), e.getGeneration(), new AnythingTest(), Registration.SPIDERNEST.get().defaultBlockState(), 3, 1, 20, 10);
+		generateSpiders(Registration.SpiderNestOAK.get(), e.getGeneration(), new AnythingTest(), Registration.SPIDERNEST.get().defaultBlockState(), 1, 1, 20, 5);
+		generateSpiders(Registration.SpiderNestBI.get(), e.getGeneration(), new AnythingTest(), Registration.SPIDERNEST.get().defaultBlockState(), 1, 1, 20, 7);
 	}
 	private static void generateOre(BiomeGenerationSettingsBuilder settings, RuleTest fillerType, BlockState state,
 	          int veinSize, int minHeight, int maxHeight, int amount) {
 				settings.addFeature(Decoration.UNDERGROUND_ORES,
 						Feature.ORE.configured(new OreConfiguration(fillerType, state, veinSize)).range(
 								new RangeDecoratorConfiguration(UniformHeight.of(VerticalAnchor.aboveBottom(minHeight),
-										VerticalAnchor.aboveBottom(maxHeight)))).count(amount));
+										VerticalAnchor.aboveBottom(maxHeight)))).squared().count(amount));
 	}
 	private static void generateFloorTrapUnderground(BiomeGenerationSettingsBuilder settings, RuleTest fillerType, BlockState state,
 	          int veinSize, int minHeight, int maxHeight, int amount) {
@@ -53,6 +51,6 @@ public class BlockGenerator{
 				settings.addFeature(Decoration.UNDERGROUND_ORES,
 						spiders.configured(new OreConfiguration(fillerType, state, veinSize)).range(
 								new RangeDecoratorConfiguration(UniformHeight.of(VerticalAnchor.aboveBottom(minHeight),
-										VerticalAnchor.aboveBottom(maxHeight)))).count(amount));
+										VerticalAnchor.aboveBottom(maxHeight)))).squared().count(amount));
 	}
 }

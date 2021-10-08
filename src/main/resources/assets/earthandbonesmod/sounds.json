@@ -1,0 +1,10 @@
+{
+  "menumusic": {
+    "sounds": [
+      {
+        "name": "earthandbonesmod:music/menumusic",
+        "stream": true
+      }
+    ]
+  }
+}

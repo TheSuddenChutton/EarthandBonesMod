@@ -28,24 +28,26 @@ import net.minecraft.world.level.storage.loot.LootContext.Builder;
 
 public class SpiderNest extends Block {
 	public static final IntegerProperty SPIDERS = IntegerProperty.create("spiders", 0, 3);
+	public static final IntegerProperty GROWTH_ABILITY = IntegerProperty.create("growth_ability", 0, 8);
 	public static Random rand = new Random();
 	
 	public SpiderNest () {
-		super(Properties.of(Material.CLAY).sound(SoundType.GRAVEL).strength(3.0f).requiresCorrectToolForDrops());
-	    this.registerDefaultState(this.defaultBlockState().setValue(SPIDERS, 3));
+		super(Properties.of(Material.CLAY).sound(SoundType.GRAVEL).strength(1.0f).requiresCorrectToolForDrops());
+	    this.registerDefaultState(this.defaultBlockState().setValue(SPIDERS, 3).setValue(GROWTH_ABILITY, 8));
 	}
 	
 	@Override
 	public void onPlace(BlockState p_60566_, Level p_60567_, BlockPos p_60568_, BlockState p_60569_, boolean p_60570_) {
-		if(!EventHandler.spiderNests.contains(p_60568_))EventHandler.spiderNests.add(p_60568_);
+		if(!EventHandler.ActiveSpiderNests.contains(p_60568_))EventHandler.ActiveSpiderNests.add(p_60568_);
 	}
 	@Override
 	public void tick(BlockState p_60462_, ServerLevel p_60463_, BlockPos p_60464_, Random p_60465_) {
-		if(!EventHandler.spiderNests.contains(p_60464_))EventHandler.spiderNests.add(p_60464_);
-		if(rand.nextInt(3) == 0 && p_60463_.getBlockState(p_60464_).getValue(SpiderNest.SPIDERS) < 3) {
-			p_60463_.setBlock(p_60464_, p_60463_.getBlockState(p_60464_).setValue(SpiderNest.SPIDERS, p_60463_.getBlockState(p_60464_).getValue(SpiderNest.SPIDERS)+1), 0);
+		for (int i = 0; i < EventHandler.players.size(); i++) {
+			if(!EventHandler.ActiveSpiderNests.contains(p_60464_) && EventHandler.isWithinDistance(p_60464_, EventHandler.players.get(i).blockPosition(), 50))
+			{
+				EventHandler.ActiveSpiderNests.add(p_60464_);
+			}
 		}
-		
 	}
 	@Override
 	public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
@@ -57,6 +59,7 @@ public class SpiderNest extends Block {
 	}
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_55484_) {
 		p_55484_.add(SPIDERS);
+		p_55484_.add(GROWTH_ABILITY);
 	}
 	
 }

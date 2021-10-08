@@ -1,5 +1,8 @@
 package com.github.thesuddenchutton.earthandbonesmod.setup;
 
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -17,6 +20,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import static com.github.thesuddenchutton.earthandbonesmod.EarthandBonesMod.MODID;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.github.thesuddenchutton.earthandbonesmod.blocks.ArmorOre;
 import com.github.thesuddenchutton.earthandbonesmod.blocks.DeadLeaves;
@@ -38,18 +44,23 @@ public class Registration {
 	private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 	private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
 	private static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, MODID);
+	private static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
 	
 	public static void init() {
 		ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
 		BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
 		FEATURES.register(FMLJavaModLoadingContext.get().getModEventBus());
-		
+		SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
+			
 	}
+	public static final RegistryObject<SoundEvent> MENUMUSIC = SOUNDS.register("menumusic", () -> new SoundEvent(new ResourceLocation(MODID, "sounds/music/menumusic")));
+	
+	
 	public static final RegistryObject<FloorTrap> FloorTrapUnderground = FEATURES.register("floortrap", () -> new FloorTrap(OreConfiguration.CODEC,true));
-	public static final RegistryObject<CeilTrap> SpiderNestDO = FEATURES.register("spidernestdo", () -> new CeilTrap(OreConfiguration.CODEC, Blocks.DARK_OAK_LEAVES));
-	public static final RegistryObject<CeilTrap> SpiderNestJU = FEATURES.register("spidernestju", () -> new CeilTrap(OreConfiguration.CODEC, Blocks.JUNGLE_LEAVES));
-	public static final RegistryObject<CeilTrap> SpiderNestOAK = FEATURES.register("spidernestoak", () -> new CeilTrap(OreConfiguration.CODEC, Blocks.OAK_LEAVES));
-	public static final RegistryObject<CeilTrap> SpiderNestBI = FEATURES.register("spidernestbi", () -> new CeilTrap(OreConfiguration.CODEC, Blocks.BIRCH_LEAVES));
+	public static final RegistryObject<CeilTrap> SpiderNestDO = FEATURES.register("spidernestdo", () -> new CeilTrap(OreConfiguration.CODEC, new ArrayList<Block>(Arrays.asList(Blocks.DARK_OAK_LEAVES, Registration.SPIDERNEST.get()))));
+	public static final RegistryObject<CeilTrap> SpiderNestJU = FEATURES.register("spidernestju", () -> new CeilTrap(OreConfiguration.CODEC, new ArrayList<Block>(Arrays.asList(Blocks.JUNGLE_LEAVES, Registration.SPIDERNEST.get()))));
+	public static final RegistryObject<CeilTrap> SpiderNestOAK = FEATURES.register("spidernestoak", () -> new CeilTrap(OreConfiguration.CODEC, new ArrayList<Block>(Arrays.asList(Blocks.OAK_LEAVES))));
+	public static final RegistryObject<CeilTrap> SpiderNestBI = FEATURES.register("spidernestbi", () -> new CeilTrap(OreConfiguration.CODEC, new ArrayList<Block>(Arrays.asList(Blocks.BIRCH_LEAVES))));
 
 	
 	public static final RegistryObject<HumanFlesh> HUMANFLESH = ITEMS.register("humanflesh", () -> new HumanFlesh(new Item.Properties().food(new FoodProperties.Builder().meat().alwaysEat().nutrition(4).saturationMod(1).build()).tab(CreativeModeTab.TAB_FOOD)));
@@ -60,8 +71,9 @@ public class Registration {
 
 	
 	public static final RegistryObject<Rubble> RUBBLE = BLOCKS.register("rubble", Rubble::new);
-	public static final RegistryObject<DeadLeaves> DEADLEAVES = BLOCKS.register("deadleaves", DeadLeaves::new);
 	public static final RegistryObject<Item> RUBBLE_ITEM = ITEMS.register("rubble", () -> new BlockItem(RUBBLE.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
+	public static final RegistryObject<DeadLeaves> DEADLEAVES = BLOCKS.register("deadleaves", DeadLeaves::new);
+	public static final RegistryObject<Item> DEADLEAVES_ITEM = ITEMS.register("deadleaves", () -> new BlockItem(DEADLEAVES.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
 	public static final RegistryObject<Spikes> SPIKES = BLOCKS.register("spikes", Spikes::new);
 	public static final RegistryObject<Item> SPIKES_ITEM = ITEMS.register("spikes", () -> new BlockItem(SPIKES.get(), new Item.Properties()));
 	public static final RegistryObject<SpikeTrap> SPIKETRAP = BLOCKS.register("spiketrap", SpikeTrap::new);

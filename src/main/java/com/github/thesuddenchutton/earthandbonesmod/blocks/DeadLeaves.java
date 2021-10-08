@@ -33,12 +33,6 @@ public class DeadLeaves extends Block {
 		super(Properties.of(Material.LEAVES).sound(SoundType.CAVE_VINES).destroyTime(0.1f).strength(1.0f, 0.5f));
 	}
 	@Override
-	public List<ItemStack> getDrops(BlockState p_60537_, Builder p_60538_) {
-		ArrayList<ItemStack> l = new ArrayList<ItemStack>();
-		l.add(new ItemStack(Registration.RUBBLE_ITEM.get()));
-		return l;
-	}
-	@Override
 	public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing,
 			IPlantable plantable) {
 		// TODO Auto-generated method stub
@@ -55,7 +49,9 @@ public class DeadLeaves extends Block {
 	}
 	@Override
 	public void tick(BlockState p_53216_, ServerLevel level, BlockPos p, Random rand) {
-		ItemEntity stack = new ItemEntity(level, p.getX(), p.getY()-0.5f, p.getZ(), new ItemStack(Items.STICK, rand.nextInt(2)+1));
-		level.addFreshEntity(stack);
+		if(rand.nextInt(3) == 0) {
+			ItemEntity stack = new ItemEntity(level, p.getX(), p.getY()-0.5f, p.getZ(), new ItemStack(Items.STICK, rand.nextInt(2)+1));
+			level.addFreshEntity(stack);
+		}
 	}
 }

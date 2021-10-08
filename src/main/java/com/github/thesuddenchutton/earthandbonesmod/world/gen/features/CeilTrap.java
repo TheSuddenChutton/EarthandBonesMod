@@ -1,5 +1,7 @@
 package com.github.thesuddenchutton.earthandbonesmod.world.gen.features;
 
+import java.util.ArrayList;
+
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
@@ -13,9 +15,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguratio
 
 public class CeilTrap extends OreFeature{
 
-	public static int n = 0;
-	Block b;
-	public CeilTrap(Codec<OreConfiguration> p_66531_, Block block) {
+	ArrayList<Block> b;
+	public CeilTrap(Codec<OreConfiguration> p_66531_, ArrayList<Block> block) {
 		super(p_66531_);
 		b = block;
 	}
@@ -30,10 +31,10 @@ public class CeilTrap extends OreFeature{
 		    BlockState blockstate = levelaccessor.getBlockState(blockpos);
 		    BlockState blockstate1 = levelaccessor.getBlockState(blockpos1);
 
-		    if (b == blockstate1.getBlock() && blockstate.isAir()) {
+		    if (b.contains(blockstate1.getBlock()) && blockstate.isAir()) {
 				levelaccessor.setBlock(blockpos, oreconfiguration.targetStates.get(0).state, 0);
-		    	n++;
-		    	System.out.println(n);
+		    
+		    	System.out.println("NEST");
 				return true;
 		    }
 	    }
