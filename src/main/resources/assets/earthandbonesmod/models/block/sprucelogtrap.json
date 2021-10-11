@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "earthandbonesmod:block/sprucelogtrap",
+    "north": "earthandbonesmod:block/sprucelogtrap",
+    "south": "earthandbonesmod:block/sprucelogtrap",
+    "east": "earthandbonesmod:block/sprucelogtrap",
+    "west": "earthandbonesmod:block/sprucelogtrap",
+    "up": "earthandbonesmod:block/sprucelogtrap",
+  	"down": "earthandbonesmod:block/sprucelogtrap"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "earthandbonesmod:block/junglelogtrapactivated",
+    "north": "earthandbonesmod:block/junglelogtrapactivated",
+    "south": "earthandbonesmod:block/junglelogtrapactivated",
+    "east": "earthandbonesmod:block/junglelogtrapactivated",
+    "west": "earthandbonesmod:block/junglelogtrapactivated",
+    "up": "earthandbonesmod:block/junglelogtrapactivated",
+  	"down": "earthandbonesmod:block/junglelogtrapactivated"
+  }
+}

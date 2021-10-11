@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "triggered=false": { "model": "earthandbonesmod:block/acacialogtrap" },
+        "triggered=true": { "model": "earthandbonesmod:block/acacialogtrapactivated" }
+    }
+}

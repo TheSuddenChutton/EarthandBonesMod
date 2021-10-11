@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "earthandbonesmod:block/creepercocoon_base",
+    "north": "earthandbonesmod:block/creepercocoon_side",
+    "south": "earthandbonesmod:block/creepercocoon_side",
+    "east": "earthandbonesmod:block/creepercocoon_side",
+    "west": "earthandbonesmod:block/creepercocoon_side",
+    "up": "earthandbonesmod:block/creepercocoon_base",
+  	"down": "earthandbonesmod:block/creepercocoon_base"
+  }
+}

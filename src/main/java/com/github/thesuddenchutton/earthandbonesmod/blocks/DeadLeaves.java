@@ -25,7 +25,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext.Builder;
 import net.minecraftforge.common.IPlantable;
 
-public class DeadLeaves extends Block {
+public class DeadLeaves extends FallingBlock {
 
 	public static ServerLevel serverlevel;
 	
@@ -49,9 +49,16 @@ public class DeadLeaves extends Block {
 	}
 	@Override
 	public void tick(BlockState p_53216_, ServerLevel level, BlockPos p, Random rand) {
-		if(rand.nextInt(3) == 0) {
+		
+		if(rand.nextInt(3) == 0 && level.getBlockState(p.below()).is(Blocks.AIR)) {
+			super.tick(p_53216_, level, p, rand);	
+		}
+		else if(rand.nextInt(3) == 0 && level.getBlockState(p.below()).is(Blocks.AIR)) {
 			ItemEntity stack = new ItemEntity(level, p.getX(), p.getY()-0.5f, p.getZ(), new ItemStack(Items.STICK, rand.nextInt(2)+1));
 			level.addFreshEntity(stack);
+		}
+		else if(rand.nextInt(3) == 0) {
+			level.setBlock(p, Blocks.AIR.defaultBlockState(), 0);
 		}
 	}
 }

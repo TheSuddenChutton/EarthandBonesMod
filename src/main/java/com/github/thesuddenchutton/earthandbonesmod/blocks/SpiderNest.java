@@ -1,7 +1,5 @@
 package com.github.thesuddenchutton.earthandbonesmod.blocks;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import com.github.thesuddenchutton.earthandbonesmod.handlers.EventHandler;
@@ -9,10 +7,14 @@ import com.github.thesuddenchutton.earthandbonesmod.setup.Registration;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -20,22 +22,19 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.storage.loot.LootContext.Builder;
 
 public class SpiderNest extends Block {
-	public static final IntegerProperty SPIDERS = IntegerProperty.create("spiders", 0, 3);
-	public static final IntegerProperty GROWTH_ABILITY = IntegerProperty.create("growth_ability", 0, 8);
+	public static final IntegerProperty SPIDERS = IntegerProperty.create("spiders", 0, 10);
+	public static final IntegerProperty GROWTH_ABILITY = IntegerProperty.create("growth_ability", 0, 4);
 	public static Random rand = new Random();
 	
 	public SpiderNest () {
 		super(Properties.of(Material.CLAY).sound(SoundType.GRAVEL).strength(1.0f).requiresCorrectToolForDrops());
-	    this.registerDefaultState(this.defaultBlockState().setValue(SPIDERS, 3).setValue(GROWTH_ABILITY, 8));
+	    this.registerDefaultState(this.defaultBlockState().setValue(SPIDERS, 10).setValue(GROWTH_ABILITY, 4));
 	}
-	
 	@Override
 	public void onPlace(BlockState p_60566_, Level p_60567_, BlockPos p_60568_, BlockState p_60569_, boolean p_60570_) {
 		if(!EventHandler.ActiveSpiderNests.contains(p_60568_))EventHandler.ActiveSpiderNests.add(p_60568_);
@@ -49,6 +48,56 @@ public class SpiderNest extends Block {
 			}
 		}
 	}
+	@Override
+	public void attack(BlockState p_60499_, Level level, BlockPos nest, Player player) {
+		for (int i = 0; i < EventHandler.players.size(); i++) {
+			if(!EventHandler.ActiveSpiderNests.contains(nest) && EventHandler.isWithinDistance(nest, EventHandler.players.get(i).blockPosition(), 50))
+			{
+				level.playLocalSound(nest.getX(), nest.getY(), nest.getZ(), SoundEvents.SPIDER_STEP, SoundSource.HOSTILE, 1f, 1f, true);
+				level.playLocalSound(nest.getX(), nest.getY(), nest.getZ(), SoundEvents.SPIDER_HURT, SoundSource.HOSTILE, 1f, 1f, true);
+				level.playLocalSound(nest.getX(), nest.getY(), nest.getZ(), SoundEvents.SPIDER_AMBIENT, SoundSource.HOSTILE, 1f, 1f, true);
+				EventHandler.ActiveSpiderNests.add(nest);
+			}
+		}
+	}
+	@Override
+	public boolean removedByPlayer(BlockState state, Level level, BlockPos nest, Player player, boolean willHarvest,
+			FluidState fluid) {
+		while(state.getValue(SPIDERS) > 0) {
+			System.out.println("SPIDERS");
+			Spider spider = new Spider(EntityType.SPIDER, level);
+			level.addFreshEntity(spider);
+			BlockPos spawnspot = nest;
+			boolean foundspot = false;
+			int i3 = 0;
+			while(!foundspot && i3 < 30) {
+				i3++;
+				if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+					spawnspot = spawnspot.below();
+				}
+				if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+					spawnspot = spawnspot.east(rand.nextInt(3) - 1);
+				}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+					spawnspot = spawnspot.south(rand.nextInt(3) - 1);
+				}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+					spawnspot = spawnspot.north(rand.nextInt(3) - 1);
+				}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+					spawnspot = spawnspot.west(rand.nextInt(3) - 1);
+				}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+					spawnspot = spawnspot.above(rand.nextInt(3));
+				}
+				else {
+					foundspot = true;
+				}
+			}
+			spider.setPos(spawnspot.getX(), spawnspot.getY(),spawnspot.getZ());
+			spider.setTarget(player);
+			spider.setAggressive(true);
+			level.setBlock(nest, level.getBlockState(nest).setValue(SpiderNest.SPIDERS, level.getBlockState(nest).getValue(SpiderNest.SPIDERS)-1), 3);
+		}
+		return super.removedByPlayer(state, level, nest, player, willHarvest, fluid);
+	}
+
 	@Override
 	public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
 		return (player.hasCorrectToolForDrops(Blocks.COBWEB.defaultBlockState()) && player.getItemInHand(InteractionHand.MAIN_HAND).getItem() != Items.WOODEN_SWORD);

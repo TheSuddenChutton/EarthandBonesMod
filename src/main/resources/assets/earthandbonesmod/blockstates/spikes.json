@@ -1,5 +1,30 @@
 {
-    "variants": {
-        "": { "model": "earthandbonesmod:block/spikes" }
+  "variants": {
+    "facing=down": {
+      "model": "earthandbonesmod:block/spikes",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "earthandbonesmod:block/spikes",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "earthandbonesmod:block/spikes",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "earthandbonesmod:block/spikes",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "earthandbonesmod:block/spikes"
+    },
+    "facing=west": {
+      "model": "earthandbonesmod:block/spikes",
+      "x": 90,
+      "y": 270
     }
+  }
 }

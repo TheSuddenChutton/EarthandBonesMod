@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "visual=0": { "model": "earthandbonesmod:block/creepercocoon"},
+        "visual=1": { "model": "earthandbonesmod:block/creepercocoon_upper_deadleft" },
+        "visual=2": { "model": "earthandbonesmod:block/creepercocoon_deadmature" }
+    }
+}
