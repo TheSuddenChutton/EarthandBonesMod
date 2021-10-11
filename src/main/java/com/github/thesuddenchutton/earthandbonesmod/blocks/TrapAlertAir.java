@@ -24,7 +24,10 @@ public class TrapAlertAir extends AbstractTrapBlock{
 		this.registerDefaultState(this.defaultBlockState().setValue(ALERTSTOWARD,Direction.UP));
 		
 	}
-	
+	@Override
+	protected boolean isAir(BlockState state) {
+		return true;
+	}
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		alerted(pos, level, state);
@@ -35,11 +38,11 @@ public class TrapAlertAir extends AbstractTrapBlock{
 	}
 	public static void alerted(BlockPos pos, Level level, BlockState state) {
 		if(state.getValue(ALERTSTOWARD) == Direction.UP && level.getBlockState(pos.above()).getBlock() instanceof AbstractTrapBlock) { ((AbstractTrapBlock)level.getBlockState(pos.above()).getBlock()).alerted(pos.above(), level); return; }
-		if(state.getValue(ALERTSTOWARD) == Direction.DOWN && level.getBlockState(pos.above()).getBlock() instanceof AbstractTrapBlock) { ((AbstractTrapBlock)level.getBlockState(pos.below()).getBlock()).alerted(pos.below(), level); return; }
-		if(state.getValue(ALERTSTOWARD) == Direction.EAST && level.getBlockState(pos.above()).getBlock() instanceof AbstractTrapBlock) { ((AbstractTrapBlock)level.getBlockState(pos.east()).getBlock()).alerted(pos.east(), level); return; }
-		if(state.getValue(ALERTSTOWARD) == Direction.WEST && level.getBlockState(pos.above()).getBlock() instanceof AbstractTrapBlock) { ((AbstractTrapBlock)level.getBlockState(pos.west()).getBlock()).alerted(pos.west(), level); return; }
-		if(state.getValue(ALERTSTOWARD) == Direction.NORTH && level.getBlockState(pos.above()).getBlock() instanceof AbstractTrapBlock) { ((AbstractTrapBlock)level.getBlockState(pos.north()).getBlock()).alerted(pos.north(), level); return; }
-		if(state.getValue(ALERTSTOWARD) == Direction.SOUTH && level.getBlockState(pos.above()).getBlock() instanceof AbstractTrapBlock) { ((AbstractTrapBlock)level.getBlockState(pos.south()).getBlock()).alerted(pos.south(), level); return; }
+		if(state.getValue(ALERTSTOWARD) == Direction.DOWN && level.getBlockState(pos.below()).getBlock() instanceof AbstractTrapBlock) { ((AbstractTrapBlock)level.getBlockState(pos.below()).getBlock()).alerted(pos.below(), level); return; }
+		if(state.getValue(ALERTSTOWARD) == Direction.EAST && level.getBlockState(pos.east()).getBlock() instanceof AbstractTrapBlock) { ((AbstractTrapBlock)level.getBlockState(pos.east()).getBlock()).alerted(pos.east(), level); return; }
+		if(state.getValue(ALERTSTOWARD) == Direction.WEST && level.getBlockState(pos.west()).getBlock() instanceof AbstractTrapBlock) { ((AbstractTrapBlock)level.getBlockState(pos.west()).getBlock()).alerted(pos.west(), level); return; }
+		if(state.getValue(ALERTSTOWARD) == Direction.NORTH && level.getBlockState(pos.north()).getBlock() instanceof AbstractTrapBlock) { ((AbstractTrapBlock)level.getBlockState(pos.north()).getBlock()).alerted(pos.north(), level); return; }
+		if(state.getValue(ALERTSTOWARD) == Direction.SOUTH && level.getBlockState(pos.south()).getBlock() instanceof AbstractTrapBlock) { ((AbstractTrapBlock)level.getBlockState(pos.south()).getBlock()).alerted(pos.south(), level); return; }
 		
 		//none of the above
 		level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);

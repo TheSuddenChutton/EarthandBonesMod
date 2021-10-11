@@ -15,6 +15,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.OreFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 
 public class CeilTrap extends OreFeature{
 
@@ -40,17 +42,15 @@ public class CeilTrap extends OreFeature{
 			    BlockState blockstate1 = levelaccessor.getBlockState(blockpos1);
 	
 			    //System.out.println(levelaccessor.getBiome(blockpos).getRegistryName().getPath());
-			    if(!swamp || levelaccessor.getBiome(blockpos).getRegistryName().getPath() == "swamp"){
-				    if (b.contains(blockstate1.getBlock()) && blockstate.isAir() && !space) {
+			    if(!swamp || levelaccessor.getBiome(blockpos).getRegistryName().getPath().contains("swamp")){
+				    if (b.contains(blockstate1.getBlock()) && (blockstate.isAir() || blockstate.canBeReplaced(Fluids.FLOWING_WATER)) && !space) {
 						levelaccessor.setBlock(blockpos, oreconfiguration.targetStates.get(0).state, 0);
 				    
 				    	return true;
 				    }
 				    else if(b.contains(blockstate1.getBlock()) && blockstate.isAir()){
 				    	BlockState blockstateb = levelaccessor.getBlockState(blockpos.below());
-					    BlockState blockstateb2 = levelaccessor.getBlockState(blockpos.below(2));
-					    
-				    	if (blockstateb.isAir() && blockstateb2.isAir())
+				    	if (blockstateb.isAir())
 						{
 							levelaccessor.setBlock(blockpos, oreconfiguration.targetStates.get(0).state, 0);
 							System.out.println("CREEPER COCOON");

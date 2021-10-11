@@ -29,8 +29,8 @@ public class BlockGenerator{
 		generateOre(e.getGeneration(), new GravelOrStoneTest(), Registration.HEALTHYORE.get().defaultBlockState(), 4, 10, 40, 10);
 		generateFloorTrapUnderground(e.getGeneration(), new AnythingTest(), Registration.SPIKETRAP.get().defaultBlockState(), 4, 1, 3, 20);
 		generateFloorTrapUnderground(e.getGeneration(), new AnythingTest(), Registration.SPIKETRAP.get().defaultBlockState(), 1, 33, 50, 30);
-		generateAreaTrap(Registration.TreeTrapAcacia.get(), e.getGeneration(), new AnythingTest(), Registration.ACACIALOGTRAP.get().defaultBlockState(), 3, 40, 70, 15);
-		generateAreaTrap(Registration.TreeTrapJungle.get(), e.getGeneration(), new AnythingTest(), Registration.JUNGLELOGTRAP.get().defaultBlockState(), 10, 40, 70, 50);
+		generateAreaTrap(Registration.TreeTrapAcacia.get(), e.getGeneration(), new AnythingTest(), Registration.ACACIALOGTRAP.get().defaultBlockState(), 10, 40, 70, 15);
+		generateAreaTrap(Registration.TreeTrapJungle.get(), e.getGeneration(), new AnythingTest(), Registration.JUNGLELOGTRAP.get().defaultBlockState(), 10, 40, 70, 15);
 		generateAreaTrap(Registration.TreeTrapSpruce.get(), e.getGeneration(), new AnythingTest(), Registration.SPRUCELOGTRAP.get().defaultBlockState(), 10, 40, 70, 15);
 		generateCeilTrap(Registration.SpiderNestDarkOak.get(), e.getGeneration(), new AnythingTest(), Registration.SPIDERNEST.get().defaultBlockState(), 15, 45, 70, 1);
 		generateCeilTrap(Registration.SpiderNestOakBirch.get(), e.getGeneration(), new AnythingTest(), Registration.SPIDERNEST.get().defaultBlockState(), 1, 45, 60, 10);

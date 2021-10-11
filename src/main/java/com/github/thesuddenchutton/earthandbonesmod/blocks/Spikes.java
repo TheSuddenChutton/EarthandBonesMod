@@ -27,7 +27,7 @@ public class Spikes extends Block{
 	
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if(entity instanceof Player)entity.hurt(new DamageSource("spike trap"), state.getValue(DAMAGE)*(entity.fallDistance+1));
+		if(entity instanceof Player)entity.hurt(new DamageSource("spiketrap"), state.getValue(DAMAGE)*(entity.fallDistance+1));
 		else entity.hurt(new DamageSource("spike trap"), state.getValue(DAMAGE)-2);
 	}
 

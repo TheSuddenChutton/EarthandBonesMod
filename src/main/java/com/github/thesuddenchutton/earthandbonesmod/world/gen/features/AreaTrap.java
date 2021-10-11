@@ -37,12 +37,12 @@ public class AreaTrap extends OreFeature{
 	    }
     	int amountspawned = 0;
 	    if(air < 50) {
-		    for(int y = -2; y <= 2; y++) {
-		    	for(int x = -2; x <= 2; x++) {
-		    		for(int z = -2; z <= 2; z++) {
-		    		    blockstate = levelaccessor.getBlockState(blockpos.east(x).above(y).south(z));
+		    for(int y = -5; y <= 5; y++) {
+		    	for(int x = -5; x <= 5; x++) {
+		    		for(int z = -5; z <= 5; z++) {
+		    		    blockstate = levelaccessor.getBlockState(blockpos.east(x).above(y + air).south(z));
 		    		    if (b.contains(blockstate.getBlock())) {
-							levelaccessor.setBlock(blockpos.east(x).above(y).south(z), oreconfiguration.targetStates.get(0).state, 0);
+							levelaccessor.setBlock(blockpos.east(x).above(y + air).south(z), oreconfiguration.targetStates.get(0).state, 0);
 							if(amountspawned < oreconfiguration.size) {
 								amountspawned++;
 							}

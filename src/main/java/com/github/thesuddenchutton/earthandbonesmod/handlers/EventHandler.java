@@ -14,6 +14,7 @@ import com.github.thesuddenchutton.earthandbonesmod.setup.Registration;
 import com.github.thesuddenchutton.earthandbonesmod.world.gen.BlockGenerator;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -342,38 +343,41 @@ public class EventHandler {
 			if(rand.nextInt(5)==0) {
 				boolean quedForRemoval = players.size()>0;
 				boolean spawned = false;
-				for (int i = 0; i < players.size() && !spawned; i++) {
-					Player player = players.get(i);
-					BlockPos nest = ActiveCreeperCocoons.get(i2);
-					if(level.getBlockState(nest).getBlock() != Registration.CREEPERCOCOON_UPPER.get()) {
+				int i = EventHandler.players.size()-1;
+				if(i < 0)return;
+				else if (i != 0) {
+					i-=rand.nextInt(EventHandler.players.size());
+				}
+				Player player = players.get(i);
+				BlockPos nest = ActiveCreeperCocoons.get(i2);
+				if(level.getBlockState(nest).getBlock() != Registration.CREEPERCOCOON_UPPER.get()) {
+					quedForRemoval = false;
+					ActiveCreeperCocoons.remove(i2);
+					i2--;
+				}
+				else{
+					if(isWithinDistance(nest, player.blockPosition(), 10) && level.getBlockState(nest).getValue(CreeperCocoonUpper.FULLSIZE) && level.getBlockState(nest).getValue(CreeperCocoonUpper.MATURITY) >= 3) {
+						System.out.println("CREEPER");
+						Creeper creeper = new Creeper(EntityType.CREEPER, level);
+						level.addFreshEntity(creeper);
+						BlockPos spawnspot = nest.below().north();
+						creeper.setPos(spawnspot.getX(), spawnspot.getY(),spawnspot.getZ());
+						creeper.setTarget(player);
+						creeper.setAggressive(true);
+						creeper.setSilent(true);
+						creeper.getAttribute(Attributes.FOLLOW_RANGE).addTransientModifier(new AttributeModifier("Provoked", 100, Operation.ADDITION));
+						creeper.getAttribute(Attributes.KNOCKBACK_RESISTANCE).addTransientModifier(new AttributeModifier("Provoked", 100, Operation.ADDITION));
+						creeper.getAttribute(Attributes.ARMOR).addTransientModifier(new AttributeModifier("Provoked", 20, Operation.ADDITION));
+						creeper.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Provoked", 0.2f, Operation.MULTIPLY_BASE));
+						level.setBlock(nest, level.getBlockState(nest).setValue(CreeperCocoonUpper.LEFT, true), 3);
+						level.setBlock(nest.below(), level.getBlockState(nest.below()).setValue(CreeperCocoonLower.VISUAL, 1), 3);
+						spawned = true;
 						quedForRemoval = false;
 						ActiveCreeperCocoons.remove(i2);
 						i2--;
 					}
-					else{
-						if(isWithinDistance(nest, player.blockPosition(), 10) && level.getBlockState(nest).getValue(CreeperCocoonUpper.FULLSIZE) && level.getBlockState(nest).getValue(CreeperCocoonUpper.MATURITY) >= 3) {
-							System.out.println("CREEPER");
-							Creeper creeper = new Creeper(EntityType.CREEPER, level);
-							level.addFreshEntity(creeper);
-							BlockPos spawnspot = nest.below().north();
-							creeper.setPos(spawnspot.getX(), spawnspot.getY(),spawnspot.getZ());
-							creeper.setTarget(player);
-							creeper.setAggressive(true);
-							creeper.setSilent(true);
-							creeper.getAttribute(Attributes.FOLLOW_RANGE).addTransientModifier(new AttributeModifier("Provoked", 100, Operation.ADDITION));
-							creeper.getAttribute(Attributes.KNOCKBACK_RESISTANCE).addTransientModifier(new AttributeModifier("Provoked", 100, Operation.ADDITION));
-							creeper.getAttribute(Attributes.ARMOR).addTransientModifier(new AttributeModifier("Provoked", 20, Operation.ADDITION));
-							creeper.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Provoked", 0.2f, Operation.MULTIPLY_BASE));
-							level.setBlock(nest, level.getBlockState(nest).setValue(CreeperCocoonUpper.LEFT, true), 3);
-							level.setBlock(nest.below(), level.getBlockState(nest.below()).setValue(CreeperCocoonLower.VISUAL, 1), 3);
-							spawned = true;
-							quedForRemoval = false;
-							ActiveCreeperCocoons.remove(i2);
-							i2--;
-						}
-					}if(isWithinDistance(nest, player.blockPosition(), 75)) {
-						quedForRemoval = false;
-					}
+				}if(isWithinDistance(nest, player.blockPosition(), 75)) {
+					quedForRemoval = false;
 				}
 				if(quedForRemoval) {
 					ActiveCreeperCocoons.remove(i2);
@@ -387,29 +391,24 @@ public class EventHandler {
 			if(level.getBlockState(ActiveCreeperCocoons.get(i)).getBlock() == Registration.CREEPERCOCOON_UPPER.get()) {
 				if(rand.nextInt(10) == 0) {
 					BlockPos cocoon = ActiveCreeperCocoons.get(i);
-					if(level.getBlockState(cocoon).getValue(CreeperCocoonUpper.FULLSIZE) && level.getBlockState(cocoon).getValue(CreeperCocoonUpper.MATURITY) < 5 && level.getBlockState(cocoon).getValue(CreeperCocoonUpper.GROWTH_ABILITY) > 0 && rand.nextInt(3)>0)GrowCocoon(cocoon, level);
-					else if(level.getBlockState(cocoon).getValue(CreeperCocoonUpper.MATURITY) < 5) level.setBlock(cocoon, level.getBlockState(cocoon).setValue(CreeperCocoonUpper.MATURITY, level.getBlockState(cocoon).getValue(CreeperCocoonUpper.MATURITY)+1), 3);
-					if(level.getBlockState(cocoon).getValue(CreeperCocoonUpper.MATURITY) == 5 && !level.getBlockState(cocoon).getValue(CreeperCocoonUpper.LEFT)) {
-						if(level.getBlockState(cocoon).getValue(CreeperCocoonUpper.FULLSIZE))level.setBlock(cocoon.below(), level.getBlockState(cocoon.below()).setValue(CreeperCocoonLower.VISUAL, 2), 3);
-						level.setBlock(cocoon, level.getBlockState(cocoon).setValue(CreeperCocoonUpper.VISUAL, 2), 3);
-						ActiveCreeperCocoons.remove(i);
-						i--;
-					}
-					else if(level.getBlockState(cocoon).getValue(CreeperCocoonUpper.MATURITY) >= 3
-							&& level.getBlockState(cocoon).getValue(CreeperCocoonUpper.MATURITY) < 5
-							&& !level.getBlockState(cocoon).getValue(CreeperCocoonUpper.FULLSIZE) 
-							&& !level.getBlockState(cocoon).getValue(CreeperCocoonUpper.LEFT)
-							&& rand.nextBoolean()) {
-						level.setBlock(cocoon.below(), Registration.CREEPERCOCOON_LOWER.get().defaultBlockState(), 3);
-						level.setBlock(cocoon, level.getBlockState(cocoon)
-								.setValue(CreeperCocoonUpper.LEFT, false)
-								.setValue(CreeperCocoonUpper.FULLSIZE, true), 3);
-					}if(level.getBlockState(cocoon).getValue(CreeperCocoonUpper.MATURITY) < 5 && rand.nextInt(10) == 0) {
-						
-						level.setBlock(cocoon, level.getBlockState(cocoon).setValue(CreeperCocoonUpper.MATURITY, level.getBlockState(cocoon).getValue(CreeperCocoonUpper.MATURITY)+1), 3);
-						if(level.getBlockState(cocoon).getValue(CreeperCocoonUpper.MATURITY) == 5) {
-							if(level.getBlockState(cocoon).getValue(CreeperCocoonUpper.FULLSIZE))level.setBlock(cocoon.below(), Registration.CREEPERCOCOON_LOWER.get().defaultBlockState().setValue(CreeperCocoonLower.VISUAL, 2), 3);
-							level.setBlock(cocoon, level.getBlockState(cocoon).setValue(CreeperCocoonLower.VISUAL, 2), 3);
+					if(level.getBlockState(cocoon).is(Registration.CREEPERCOCOON_UPPER.get())) {
+						if(level.getBlockState(cocoon).getValue(CreeperCocoonUpper.MATURITY) >= 3
+								&& level.getBlockState(cocoon).getValue(CreeperCocoonUpper.MATURITY) < 5
+								&& !level.getBlockState(cocoon).getValue(CreeperCocoonUpper.FULLSIZE) 
+								&& !level.getBlockState(cocoon).getValue(CreeperCocoonUpper.LEFT)
+								&& rand.nextBoolean()) {
+							level.setBlock(cocoon.below(), Registration.CREEPERCOCOON_LOWER.get().defaultBlockState(), 3);
+							level.setBlock(cocoon, level.getBlockState(cocoon)
+									.setValue(CreeperCocoonUpper.LEFT, false)
+									.setValue(CreeperCocoonUpper.FULLSIZE, true), 3);
+						}
+						else if(level.getBlockState(cocoon).getValue(CreeperCocoonUpper.MATURITY) < 5 && rand.nextInt(10) == 0) {
+							
+							level.setBlock(cocoon, level.getBlockState(cocoon).setValue(CreeperCocoonUpper.MATURITY, level.getBlockState(cocoon).getValue(CreeperCocoonUpper.MATURITY)+1), 3);
+							if(level.getBlockState(cocoon).getValue(CreeperCocoonUpper.MATURITY) == 5) {
+								if(level.getBlockState(cocoon).getValue(CreeperCocoonUpper.FULLSIZE))level.setBlock(cocoon.below(), Registration.CREEPERCOCOON_LOWER.get().defaultBlockState().setValue(CreeperCocoonLower.VISUAL, 2), 3);
+								level.setBlock(cocoon.below(), level.getBlockState(cocoon).setValue(CreeperCocoonLower.VISUAL, 2), 3);
+							}
 						}
 					}
 				}
@@ -418,7 +417,6 @@ public class EventHandler {
 				ActiveCreeperCocoons.remove(i);
 			}
 		}
-		
 	}
 	static void GrowCocoon(BlockPos cocoon, Level level) {
 		BlockPos spawnspot = cocoon;
@@ -488,16 +486,18 @@ public class EventHandler {
 	
 
 	@SubscribeEvent
-	static void OnDeath(LivingDeathEvent e){
-		
-		if(e.getEntity() instanceof Player || e.getEntity() instanceof Villager || e.getEntity() instanceof AbstractIllager || e.getEntity() instanceof Skeleton || e.getEntity() instanceof Zombie || e.getEntity() instanceof ZombieVillager) {
-			if(rand.nextInt(10) == 0)e.getEntity().spawnAtLocation(new ItemStack(Registration.SPINE.get(), 1));
-			if(e.getEntity() instanceof Player || e.getEntity() instanceof Villager || e.getEntity() instanceof AbstractIllager) {
+	static void OnDeath(LivingDeathEvent event){
+	    Entity e = event.getEntity();
+		if(e instanceof Player || e instanceof Villager || e instanceof AbstractIllager || e instanceof Skeleton || e instanceof Zombie || e instanceof ZombieVillager || e instanceof Creeper) {
+			if(e instanceof Player || e instanceof Villager || e instanceof AbstractIllager) {
 				System.out.println("HUMAN FLESH");
-				e.getEntity().spawnAtLocation(new ItemStack(Registration.HUMANFLESH.get(), 5 + rand.nextInt(6)));
-				if(e.getEntity() instanceof Villager || e.getEntity() instanceof AbstractIllager && rand.nextBoolean()) {
-					e.getEntity().spawnAtLocation(new ItemStack(Registration.CIGAR.get(), rand.nextInt(8)+1));	
+				e.spawnAtLocation(new ItemStack(Registration.HUMANFLESH.get(), 5 + rand.nextInt(6)));
+				if(e instanceof Villager || e instanceof AbstractIllager && rand.nextBoolean()) {
+					e.spawnAtLocation(new ItemStack(Registration.CIGAR.get(), rand.nextInt(8)+1));	
 				}
+			}
+			if(e instanceof Skeleton) {
+				e.spawnAtLocation(new ItemStack(Registration.SPINE.get()));	
 			}
 		}
 		

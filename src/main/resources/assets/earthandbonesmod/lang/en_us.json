@@ -6,6 +6,7 @@
 	"item.earthandbonesmod.fiercion": "Fiercion",
 	"item.earthandbonesmod.tobacco": "Tobacco",
 	"item.earthandbonesmod.cigar": "Cigar",
+	
 	"block.earthandbonesmod.rubble": "Rubble",
 	"block.earthandbonesmod.spidernest": "Spider Nest",
 	"block.earthandbonesmod.creepercocoon_upper": "Creeper Cocoon Top",
@@ -18,11 +19,14 @@
 	"block.earthandbonesmod.junglelogtrap": "Jungle Log Trap",
 	"block.earthandbonesmod.sprucelogtrap": "Spruce Log Trap",
 	"block.earthandbonesmod.spikes": "Spikes",
+	
 	"message.humanflesh": "Delicious morsel.",
 	"message.armorin": "Tastes like metal.",
 	"message.healthium": "Healthy treat.",
 	"message.fiercion": "Holding this makes you feel powerful.",
 	"message.spine": "Rips the bones of your enemies right out of them.",
 	"message.tobacco": "It tastes terrible, but addictive!",
-	"message.cigar": "All the cool kids are dying from it!"
+	"message.cigar": "All the cool kids are dying from it!",
+	
+	"death.attack.spiketrap": "got impaled."
 }

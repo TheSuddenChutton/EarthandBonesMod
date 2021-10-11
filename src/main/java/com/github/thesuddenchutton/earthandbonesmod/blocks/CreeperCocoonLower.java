@@ -38,18 +38,6 @@ public class CreeperCocoonLower extends Block {
 	    this.registerDefaultState(this.defaultBlockState().setValue(VISUAL, 0));
 	}
 	@Override
-	public void tick(BlockState p_60462_, ServerLevel level, BlockPos p_60464_, Random p_60465_) {
-		for (int i = 0; i < EventHandler.players.size(); i++) {
-			if(!level.getBlockState(p_60464_.above()).is(Registration.CREEPERCOCOON_UPPER.get())) {
-				level.setBlock(p_60464_, Blocks.AIR.defaultBlockState(), 3);
-			}
-			else if(!EventHandler.ActiveCreeperCocoons.contains(p_60464_.above()) && EventHandler.isWithinDistance(p_60464_, EventHandler.players.get(i).blockPosition(), 100) && p_60462_.getValue(VISUAL) == 0)
-			{
-				EventHandler.ActiveCreeperCocoons.add(p_60464_.above());
-			}
-		}
-	}
-	@Override
 	public List<ItemStack> getDrops(BlockState p_60537_, Builder p_60538_) {
 		ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
 		switch(p_60537_.getValue(VISUAL)) {
@@ -59,11 +47,6 @@ public class CreeperCocoonLower extends Block {
 			default: break;
 		}
 		return stacks;
-	}
-	@Override
-	public void onRemove(BlockState p_60515_, Level p_60516_, BlockPos p_60517_, BlockState p_60518_,
-			boolean p_60519_) {
-		
 	}
 	@Override
 	public void attack(BlockState p_60499_, Level level, BlockPos cocoon, Player player) {
@@ -102,9 +85,11 @@ public class CreeperCocoonLower extends Block {
 				creeper.setPos(spawnspot.getX(), spawnspot.getY(),spawnspot.getZ());
 				creeper.setTarget(player);
 				creeper.setAggressive(true);
-				creeper.getAttribute(Attributes.FOLLOW_RANGE).addTransientModifier(new AttributeModifier("Provoked", 100, Operation.ADDITION));
-				creeper.getAttribute(Attributes.KNOCKBACK_RESISTANCE).addTransientModifier(new AttributeModifier("Provoked", 100, Operation.ADDITION));
+				creeper.getAttribute(Attributes.FOLLOW_RANGE).addTransientModifier(new AttributeModifier("Provoked", 500, Operation.ADDITION));
+				creeper.getAttribute(Attributes.KNOCKBACK_RESISTANCE).addTransientModifier(new AttributeModifier("Provoked", 0.1, Operation.MULTIPLY_BASE));
 				creeper.getAttribute(Attributes.ARMOR).addTransientModifier(new AttributeModifier("Provoked", 20, Operation.ADDITION));
+				creeper.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(new AttributeModifier("Provoked", 2.5f, Operation.MULTIPLY_BASE));
+				creeper.getAttribute(Attributes.MAX_HEALTH).addTransientModifier(new AttributeModifier("Provoked", 2, Operation.MULTIPLY_BASE));
 				
 				level.setBlock(cocoon, level.getBlockState(cocoon).setValue(CreeperCocoonUpper.VISUAL, 1), 3);
 				level.setBlock(cocoon.above(), level.getBlockState(cocoon.above()).setValue(VISUAL, 1).setValue(CreeperCocoonUpper.GROWTH_ABILITY, 0).setValue(CreeperCocoonUpper.LEFT, true), 3);
@@ -117,7 +102,7 @@ public class CreeperCocoonLower extends Block {
 	}
 	@Override
 	public boolean isRandomlyTicking(BlockState p_49921_) {
-		return true;
+		return p_49921_.getValue(VISUAL) == 0;
 	}
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_55484_) {
 		p_55484_.add(VISUAL);

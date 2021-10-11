@@ -45,45 +45,44 @@ public class CreeperCocoonUpper extends Block {
 	public static Random rand = new Random();
 	
 	public CreeperCocoonUpper () {
-		super(Properties.of(Material.CLAY).sound(SoundType.GRAVEL).strength(1.0f).requiresCorrectToolForDrops());
+		super(Properties.of(Material.CLAY).sound(SoundType.GRAVEL).requiresCorrectToolForDrops());
 	    this.registerDefaultState(this.defaultBlockState().setValue(LEFT, false).setValue(FULLSIZE, false).setValue(MATURITY, 0).setValue(GROWTH_ABILITY, 32).setValue(VISUAL, 0));
 	}
 	@Override
-	public void onPlace(BlockState p_60566_, Level p_60567_, BlockPos p_60568_, BlockState p_60569_, boolean p_60570_) {
-		if(!EventHandler.ActiveCreeperCocoons.contains(p_60568_))EventHandler.ActiveCreeperCocoons.add(p_60568_);
+	public void onRemove(BlockState p_60515_, Level p_60516_, BlockPos p_60517_, BlockState p_60518_,
+			boolean p_60519_) {
+		p_60516_.setBlock(p_60517_.below(), Blocks.AIR.defaultBlockState(), UPDATE_ALL);	
 	}
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random p_60465_) {
-		for (int i = 0; i < EventHandler.players.size(); i++) {
-			if(!level.getBlockState(pos.above()).is(Blocks.JUNGLE_LEAVES) && !level.getBlockState(pos.above()).is(Blocks.OAK_LEAVES)) {
-				if(!state.getValue(LEFT) && state.getValue(MATURITY) >= 3 && state.getValue(MATURITY) < 5) {
-					System.out.println("Creepers");
-					Creeper creeper = new Creeper(EntityType.CREEPER, level);
-					level.addFreshEntity(creeper);
-					BlockPos spawnspot = pos.north().below();
-					
-					creeper.setPos(spawnspot.getX(), spawnspot.getY(),spawnspot.getZ());
-					creeper.setAggressive(true);
-					creeper.getAttribute(Attributes.FOLLOW_RANGE).addTransientModifier(new AttributeModifier("Provoked", 100, Operation.ADDITION));
-					creeper.getAttribute(Attributes.KNOCKBACK_RESISTANCE).addTransientModifier(new AttributeModifier("Provoked", 100, Operation.ADDITION));
-					creeper.getAttribute(Attributes.JUMP_STRENGTH).addTransientModifier(new AttributeModifier("Provoked", 3, Operation.ADDITION));
-					creeper.getAttribute(Attributes.ARMOR).addTransientModifier(new AttributeModifier("Provoked", 20, Operation.ADDITION));
-					
-					level.setBlock(pos, level.getBlockState(pos).setValue(CreeperCocoonUpper.LEFT, true).setValue(CreeperCocoonUpper.GROWTH_ABILITY, 0), 3);
-					level.setBlock(pos.below(), level.getBlockState(pos.below()).setValue(CreeperCocoonUpper.LEFT, true).setValue(CreeperCocoonUpper.GROWTH_ABILITY, 0), 3);
-				}
-				level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+		int i = EventHandler.players.size()-1;
+		if(i < 0)return;
+		else if (i != 0) {
+			i-=rand.nextInt(EventHandler.players.size());
+		}
+		if(!level.getBlockState(pos.above()).is(Blocks.JUNGLE_LEAVES) && !level.getBlockState(pos.above()).is(Blocks.OAK_LEAVES)) {
+			if(!state.getValue(LEFT) && state.getValue(MATURITY) >= 3 && state.getValue(MATURITY) < 5 && state.getValue(FULLSIZE)) {
+				System.out.println("Creepers");
+				Creeper creeper = new Creeper(EntityType.CREEPER, level);
+				level.addFreshEntity(creeper);
+				BlockPos spawnspot = pos.north().below();
+				
+				creeper.setPos(spawnspot.getX(), spawnspot.getY(),spawnspot.getZ());
+				creeper.setAggressive(true);
+				creeper.getAttribute(Attributes.FOLLOW_RANGE).addTransientModifier(new AttributeModifier("Provoked", 100, Operation.ADDITION));
+				creeper.getAttribute(Attributes.KNOCKBACK_RESISTANCE).addTransientModifier(new AttributeModifier("Provoked", 100, Operation.ADDITION));
+				creeper.getAttribute(Attributes.ARMOR).addTransientModifier(new AttributeModifier("Provoked", 20, Operation.ADDITION));
+				
+				level.setBlock(pos, level.getBlockState(pos).setValue(VISUAL, 1).setValue(CreeperCocoonUpper.LEFT, true).setValue(CreeperCocoonUpper.GROWTH_ABILITY, 0), 3);
+				level.setBlock(pos.below(), level.getBlockState(pos.below()).setValue(CreeperCocoonLower.VISUAL, 1), 3);
 			}
-			if(level.getBlockState(pos.below()).is(Registration.CREEPERCOCOON_LOWER.get()) && state.getValue(FULLSIZE)) {
-				level.setBlock(pos, state.setValue(FULLSIZE, true), 3);
-			}
-			else if(state.getValue(FULLSIZE)) {
-				level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
-			}
-			if(!EventHandler.ActiveCreeperCocoons.contains(pos) && EventHandler.isWithinDistance(pos, EventHandler.players.get(i).blockPosition(), 100) && !state.getValue(LEFT) && state.getValue(MATURITY) != 5)
-			{
-				EventHandler.ActiveCreeperCocoons.add(pos);
-			}
+		}
+		if(!level.getBlockState(pos.below()).is(Registration.CREEPERCOCOON_LOWER.get()) && state.getValue(FULLSIZE)) {
+			level.setBlock(pos.below(), Registration.CREEPERCOCOON_LOWER.get().defaultBlockState().setValue(CreeperCocoonLower.VISUAL, state.getValue(VISUAL)), 3);
+		}
+		if(EventHandler.players.size() > 0 && !EventHandler.ActiveCreeperCocoons.contains(pos) && EventHandler.isWithinDistance(pos, EventHandler.players.get(i).blockPosition(), 100) && !state.getValue(LEFT) && state.getValue(MATURITY) != 5)
+		{
+			EventHandler.ActiveCreeperCocoons.add(pos);
 		}
 	}
 	@Override
@@ -101,18 +100,18 @@ public class CreeperCocoonUpper extends Block {
 			int i3 = 0;
 			while(!foundspot && i3 < 30) {
 				i3++;
-				if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+				if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR)) {
 					spawnspot = spawnspot.below();
 				}
-				if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+				if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR)) {
 					spawnspot = spawnspot.east(rand.nextInt(3) - 1);
-				}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+				}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR)) {
 					spawnspot = spawnspot.south(rand.nextInt(3) - 1);
-				}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+				}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR)) {
 					spawnspot = spawnspot.north(rand.nextInt(3) - 1);
-				}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+				}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR)) {
 					spawnspot = spawnspot.west(rand.nextInt(3) - 1);
-				}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR) && !level.getBlockState(spawnspot).is(Blocks.COBWEB)) {
+				}if(!level.getBlockState(spawnspot).is(Blocks.AIR) && !level.getBlockState(spawnspot).is(Blocks.CAVE_AIR)) {
 					spawnspot = spawnspot.above(rand.nextInt(3));
 				}
 				else {
@@ -132,11 +131,11 @@ public class CreeperCocoonUpper extends Block {
 	}
 	@Override
 	public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
-		return (player.hasCorrectToolForDrops(Blocks.COBWEB.defaultBlockState()) && player.getItemInHand(InteractionHand.MAIN_HAND).getItem() != Items.WOODEN_SWORD);
+		return true;
 	}
 	@Override
 	public boolean isRandomlyTicking(BlockState p_49921_) {
-		return true;
+		return p_49921_.getValue(VISUAL) == 0;
 	}
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_55484_) {
 		p_55484_.add(LEFT);

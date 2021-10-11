@@ -10,6 +10,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.OreFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
@@ -53,8 +55,10 @@ public class Registration {
 	private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
 	private static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, MODID);
 	private static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
+	private static final DeferredRegister<BlockEntityType<?>> BLOCKEENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MODID);
 	
 	public static void init() {
+		BLOCKEENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
 		ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
 		BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
 		FEATURES.register(FMLJavaModLoadingContext.get().getModEventBus());
@@ -75,7 +79,7 @@ public class Registration {
 	public static final RegistryObject<CeilTrap> CreeperCocoonSwamp = FEATURES.register("creepercocoonsw", () -> new CeilTrap(OreConfiguration.CODEC, new ArrayList<Block>(Arrays.asList(Blocks.OAK_LEAVES)),false, true));
 	
 	
-	public static final RegistryObject<HumanFlesh> HUMANFLESH = ITEMS.register("humanflesh", () -> new HumanFlesh(new Item.Properties().food(new FoodProperties.Builder().meat().alwaysEat().nutrition(4).saturationMod(1).build()).tab(CreativeModeTab.TAB_FOOD)));
+	public static final RegistryObject<HumanFlesh> HUMANFLESH = ITEMS.register("humanflesh", () -> new HumanFlesh(new Item.Properties().food(new FoodProperties.Builder().meat().alwaysEat().nutrition(5).saturationMod(-4f).build()).tab(CreativeModeTab.TAB_FOOD)));
 	public static final RegistryObject<Healthium> HEALTHIUM = ITEMS.register("healthium", () -> new Healthium(new Item.Properties().food(new FoodProperties.Builder().alwaysEat().nutrition(0).saturationMod(10).build()).tab(CreativeModeTab.TAB_FOOD)));
 	public static final RegistryObject<Armorin> ARMORIN = ITEMS.register("armorin", () -> new Armorin(new Item.Properties().food(new FoodProperties.Builder().alwaysEat().nutrition(0).saturationMod(0).build()).tab(CreativeModeTab.TAB_FOOD)));
 	public static final RegistryObject<Fierceion> FIERCEION = ITEMS.register("fiercion", () -> new Fierceion(new Item.Properties().food(new FoodProperties.Builder().alwaysEat().nutrition(0).saturationMod(0).build()).tab(CreativeModeTab.TAB_FOOD)));

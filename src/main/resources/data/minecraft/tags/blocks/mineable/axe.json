@@ -1,8 +1,10 @@
 {
   "replace": false,
   "values": [
-    "earthandbonesmod:acacialogtrap",
-    "earthandbonesmod:junglelogtrap",
-    "earthandbonesmod:sprucelogtrap"
+      "earthandbonesmod:acacialogtrap",
+      "earthandbonesmod:junglelogtrap",
+      "earthandbonesmod:sprucelogtrap",
+      "earthandbonesmod:creepercocoon_upper",
+      "earthandbonesmod:creepercocoon_lower"
     ]
 }

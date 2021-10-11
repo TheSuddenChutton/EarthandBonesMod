@@ -29,22 +29,28 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext.Builder;
 import net.minecraftforge.common.IPlantable;
 
-public class MultidirectionalSpikeTrap extends AbstractTrapBlock{
+public class MultidirectionalWoodenSpikeTrap extends AbstractTrapBlock{
 
 	public static final BooleanProperty TRIGGERED = BlockStateProperties.TRIGGERED;
 	
-	public MultidirectionalSpikeTrap() {
+	public MultidirectionalWoodenSpikeTrap(boolean wooden) {
 		super(Properties.of(Material.WOOD).destroyTime(1).requiresCorrectToolForDrops());
+
 	    this.registerDefaultState(this.defaultBlockState().setValue(TRIGGERED, Boolean.valueOf(false)));
 	}
 	@Override
+	public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing,
+			IPlantable plantable) {
+		return state.is(Blocks.JUNGLE_LEAVES) || state.is(Blocks.SPRUCE_LEAVES) || state.is(Blocks.ACACIA_LEAVES);
+	}
+	@Override
 	public void onPlace(BlockState p_60566_, Level world, BlockPos pos, BlockState p_60569_, boolean p_60570_) {
-		if(world.getBlockState(pos.above()).isAir() || world.getBlockState(pos.above()).canBeReplaced(Fluids.FLOWING_WATER) || world.getBlockState(pos.above()).is(Blocks.VINE)) world.setBlock(pos.above(), Registration.TRAP_ALERT_AIR.get().defaultBlockState().setValue(TrapAlertAir.ALERTSTOWARD, Direction.DOWN), UPDATE_ALL);
-		if(world.getBlockState(pos.below()).isAir() || world.getBlockState(pos.below()).canBeReplaced(Fluids.FLOWING_WATER) || world.getBlockState(pos.below()).is(Blocks.VINE)) world.setBlock(pos.below(), Registration.TRAP_ALERT_AIR.get().defaultBlockState().setValue(TrapAlertAir.ALERTSTOWARD, Direction.UP), UPDATE_ALL);
-		if(world.getBlockState(pos.north()).isAir() || world.getBlockState(pos.north()).canBeReplaced(Fluids.FLOWING_WATER) || world.getBlockState(pos.north()).is(Blocks.VINE)) world.setBlock(pos.north(), Registration.TRAP_ALERT_AIR.get().defaultBlockState().setValue(TrapAlertAir.ALERTSTOWARD, Direction.SOUTH), UPDATE_ALL);
-		if(world.getBlockState(pos.south()).isAir() || world.getBlockState(pos.south()).canBeReplaced(Fluids.FLOWING_WATER) || world.getBlockState(pos.south()).is(Blocks.VINE)) world.setBlock(pos.south(), Registration.TRAP_ALERT_AIR.get().defaultBlockState().setValue(TrapAlertAir.ALERTSTOWARD, Direction.NORTH), UPDATE_ALL);
-		if(world.getBlockState(pos.east()).isAir() || world.getBlockState(pos.east()).canBeReplaced(Fluids.FLOWING_WATER) || world.getBlockState(pos.east()).is(Blocks.VINE)) world.setBlock(pos.west(), Registration.TRAP_ALERT_AIR.get().defaultBlockState().setValue(TrapAlertAir.ALERTSTOWARD, Direction.WEST), UPDATE_ALL);
-		if(world.getBlockState(pos.west()).isAir() || world.getBlockState(pos.west()).canBeReplaced(Fluids.FLOWING_WATER) || world.getBlockState(pos.west()).is(Blocks.VINE)) world.setBlock(pos.east(), Registration.TRAP_ALERT_AIR.get().defaultBlockState().setValue(TrapAlertAir.ALERTSTOWARD, Direction.EAST), UPDATE_ALL);
+		if(world.getBlockState(pos.above()).isAir() || world.getBlockState(pos.above()).canBeReplaced(Fluids.FLOWING_WATER) || world.getBlockState(pos.above()).is(Blocks.VINE)) world.setBlock(pos.above(), Registration.TRAP_ALERT_AIR.get().defaultBlockState().setValue(Spikes.POINTING, Direction.DOWN), UPDATE_ALL);
+		if(world.getBlockState(pos.below()).isAir() || world.getBlockState(pos.below()).canBeReplaced(Fluids.FLOWING_WATER) || world.getBlockState(pos.below()).is(Blocks.VINE)) world.setBlock(pos.below(), Registration.TRAP_ALERT_AIR.get().defaultBlockState().setValue(Spikes.POINTING, Direction.UP), UPDATE_ALL);
+		if(world.getBlockState(pos.north()).isAir() || world.getBlockState(pos.north()).canBeReplaced(Fluids.FLOWING_WATER) || world.getBlockState(pos.north()).is(Blocks.VINE)) world.setBlock(pos.north(), Registration.TRAP_ALERT_AIR.get().defaultBlockState().setValue(Spikes.POINTING, Direction.SOUTH), UPDATE_ALL);
+		if(world.getBlockState(pos.south()).isAir() || world.getBlockState(pos.south()).canBeReplaced(Fluids.FLOWING_WATER) || world.getBlockState(pos.south()).is(Blocks.VINE)) world.setBlock(pos.south(), Registration.TRAP_ALERT_AIR.get().defaultBlockState().setValue(Spikes.POINTING, Direction.NORTH), UPDATE_ALL);
+		if(world.getBlockState(pos.east()).isAir() || world.getBlockState(pos.east()).canBeReplaced(Fluids.FLOWING_WATER) || world.getBlockState(pos.east()).is(Blocks.VINE)) world.setBlock(pos.west(), Registration.TRAP_ALERT_AIR.get().defaultBlockState().setValue(Spikes.POINTING, Direction.WEST), UPDATE_ALL);
+		if(world.getBlockState(pos.west()).isAir() || world.getBlockState(pos.west()).canBeReplaced(Fluids.FLOWING_WATER) || world.getBlockState(pos.west()).is(Blocks.VINE)) world.setBlock(pos.east(), Registration.TRAP_ALERT_AIR.get().defaultBlockState().setValue(Spikes.POINTING, Direction.EAST), UPDATE_ALL);
 	}
 	
 	@Override
@@ -85,12 +91,12 @@ public class MultidirectionalSpikeTrap extends AbstractTrapBlock{
 	public static void extend(Level world, BlockPos pos){
 		if(!world.getBlockState(pos).getValue(TRIGGERED)) {
 			world.setBlock(pos, world.getBlockState(pos).setValue(TRIGGERED, true), 3);
-			if(world.getBlockState(pos.above()).isAir() || world.getBlockState(pos.above()).canBeReplaced(Fluids.FLOWING_WATER)) world.setBlock(pos.above(), Registration.SPIKES.get().defaultBlockState().setValue(TrapAlertAir.ALERTSTOWARD, Direction.UP), UPDATE_ALL);
-			if(world.getBlockState(pos.below()).isAir() || world.getBlockState(pos.above()).canBeReplaced(Fluids.FLOWING_WATER)) world.setBlock(pos.below(), Registration.SPIKES.get().defaultBlockState().setValue(TrapAlertAir.ALERTSTOWARD, Direction.DOWN), UPDATE_ALL);
-			if(world.getBlockState(pos.north()).isAir() || world.getBlockState(pos.north()).canBeReplaced(Fluids.FLOWING_WATER)) world.setBlock(pos.north(), Registration.SPIKES.get().defaultBlockState().setValue(TrapAlertAir.ALERTSTOWARD, Direction.NORTH), UPDATE_ALL);
-			if(world.getBlockState(pos.south()).isAir() || world.getBlockState(pos.north()).canBeReplaced(Fluids.FLOWING_WATER)) world.setBlock(pos.south(), Registration.SPIKES.get().defaultBlockState().setValue(TrapAlertAir.ALERTSTOWARD, Direction.SOUTH), UPDATE_ALL);
-			if(world.getBlockState(pos.east()).isAir() || world.getBlockState(pos.north()).canBeReplaced(Fluids.FLOWING_WATER)) world.setBlock(pos.east(), Registration.SPIKES.get().defaultBlockState().setValue(TrapAlertAir.ALERTSTOWARD, Direction.EAST), UPDATE_ALL);
-			if(world.getBlockState(pos.west()).isAir() || world.getBlockState(pos.north()).canBeReplaced(Fluids.FLOWING_WATER)) world.setBlock(pos.west(), Registration.SPIKES.get().defaultBlockState().setValue(TrapAlertAir.ALERTSTOWARD, Direction.WEST), UPDATE_ALL);
+			if(world.getBlockState(pos.above()).isAir() || world.getBlockState(pos.above()).canBeReplaced(Fluids.FLOWING_WATER)) world.setBlock(pos.above(), Registration.SPIKES.get().defaultBlockState().setValue(Spikes.POINTING, Direction.UP), UPDATE_ALL);
+			if(world.getBlockState(pos.below()).isAir() || world.getBlockState(pos.above()).canBeReplaced(Fluids.FLOWING_WATER)) world.setBlock(pos.below(), Registration.SPIKES.get().defaultBlockState().setValue(Spikes.POINTING, Direction.DOWN), UPDATE_ALL);
+			if(world.getBlockState(pos.north()).isAir() || world.getBlockState(pos.north()).canBeReplaced(Fluids.FLOWING_WATER)) world.setBlock(pos.north(), Registration.SPIKES.get().defaultBlockState().setValue(Spikes.POINTING, Direction.NORTH), UPDATE_ALL);
+			if(world.getBlockState(pos.south()).isAir() || world.getBlockState(pos.north()).canBeReplaced(Fluids.FLOWING_WATER)) world.setBlock(pos.south(), Registration.SPIKES.get().defaultBlockState().setValue(Spikes.POINTING, Direction.SOUTH), UPDATE_ALL);
+			if(world.getBlockState(pos.east()).isAir() || world.getBlockState(pos.north()).canBeReplaced(Fluids.FLOWING_WATER)) world.setBlock(pos.east(), Registration.SPIKES.get().defaultBlockState().setValue(Spikes.POINTING, Direction.EAST), UPDATE_ALL);
+			if(world.getBlockState(pos.west()).isAir() || world.getBlockState(pos.north()).canBeReplaced(Fluids.FLOWING_WATER)) world.setBlock(pos.west(), Registration.SPIKES.get().defaultBlockState().setValue(Spikes.POINTING, Direction.WEST), UPDATE_ALL);
 		}
 	}
 
